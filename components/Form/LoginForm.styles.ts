@@ -7,4 +7,19 @@ export const useStyles = createStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
   },
+
+  greeting: {
+    textAlign: "center",
+  },
+
+  input: {
+    width: "100%",
+  },
+
+  form: {
+    width: "100%",
+  },
+  logo: {
+    height: "44px",
+  },
 }));

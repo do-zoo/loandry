@@ -20,7 +20,7 @@ export default async function handler(
       if (!email || !password) {
         return res
           .status(400)
-          .json({ message: "Wajib mengisi kolom Email dan password" });
+          .send({ message: "Wajib mengisi kolom Email dan password" });
       }
 
       try {
@@ -30,17 +30,17 @@ export default async function handler(
         if (!user) {
           return res
             .status(400)
-            .json({ message: "Cek kembali email dan password" });
+            .send({ message: "Cek kembali email dan password" });
         }
         if (!matchPass(password, user.password)) {
           return res
             .status(400)
-            .json({ message: "Cek kembali email dan password" });
+            .send({ message: "Cek kembali email dan password" });
         }
 
-        return res.json({ message: "Login Sukses", data: user });
+        return res.send({ message: "Login Sukses", data: user });
       } catch (err) {
-        return res.status(400).json({ err });
+        return res.status(400).send({ err });
       }
       //   const allUsers = await users.find();
     },

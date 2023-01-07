@@ -1,7 +1,7 @@
 import { SignInResponse, signIn } from "next-auth/react";
 import { UseFormReturn } from "react-hook-form";
 import { UseMutationResult } from "react-query";
-import { useMutation, useQueryClient } from "react-query/types/react";
+import { useMutation, useQueryClient } from "react-query";
 
 interface ILoginPayload {
   email: string;
