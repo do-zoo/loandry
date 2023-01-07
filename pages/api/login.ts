@@ -42,22 +42,10 @@ export default async function handler(
       } catch (err) {
         return res.status(400).send({ err });
       }
-      //   const allUsers = await users.find();
     },
   };
 
   const response = handleCase[method];
   if (response) response(req, res);
   else res.status(400).json({ error: "No Response for This Request" });
-
-  //   try {
-  //     dbConnect();
-
-  //     const users = UserModel;
-
-  //     res.status(200).json({ users: allUsers });
-  //   } catch (error) {
-  //     console.error(error);
-  //     res.status(500).json({ message: "Internal server error" });
-  //   }
 }
