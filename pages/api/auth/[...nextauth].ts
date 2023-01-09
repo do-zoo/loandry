@@ -30,10 +30,13 @@ export const authOptions: AuthOptions = {
         // You can also use the `req` object to obtain additional parameters
         // (i.e., the request IP address)
         try {
-          const { data } = await axios.post("http://localhost:3000/api/login", {
-            email: credentials?.email,
-            password: credentials?.password,
-          });
+          const { data } = await axios.post(
+            `${process.env.NEXTAUTH_URL}/api/login`,
+            {
+              email: credentials?.email,
+              password: credentials?.password,
+            }
+          );
 
           return data.data;
         } catch (e: any) {
