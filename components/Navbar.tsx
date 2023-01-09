@@ -1,35 +1,22 @@
 import {
-  createStyles,
-  Header,
-  HoverCard,
-  Group,
-  Button,
-  UnstyledButton,
-  Text,
-  SimpleGrid,
-  ThemeIcon,
   Anchor,
-  Divider,
-  Center,
   Box,
   Burger,
+  Button,
+  Container,
+  Divider,
   Drawer,
-  Collapse,
+  Group,
+  Header,
   ScrollArea,
+  createStyles,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import {
-  IconNotification,
-  IconCode,
-  IconBook,
-  IconChartPie3,
-  IconFingerprint,
-  IconCoin,
-  IconChevronDown,
-  IconLogout,
-} from "@tabler/icons";
-import { Logo } from "../assets";
+import { IconLogout } from "@tabler/icons";
 import { signOut } from "next-auth/react";
+import { Logo } from "../assets";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -55,6 +42,7 @@ const useStyles = createStyles((theme) => ({
         theme.colorScheme === "dark"
           ? theme.colors.dark[6]
           : theme.colors.gray[0],
+      textDecoration: "none",
     }),
   },
 
@@ -100,165 +88,88 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-const mockdata = [
-  {
-    icon: IconCode,
-    title: "Open source",
-    description: "This Pokémon’s cry is very loud and distracting",
-  },
-  {
-    icon: IconCoin,
-    title: "Free for everyone",
-    description: "The fluid of Smeargle’s tail secretions changes",
-  },
-  {
-    icon: IconBook,
-    title: "Documentation",
-    description: "Yanma is capable of seeing 360 degrees without",
-  },
-  {
-    icon: IconFingerprint,
-    title: "Security",
-    description: "The shell’s rounded shape and the grooves on its.",
-  },
-  {
-    icon: IconChartPie3,
-    title: "Analytics",
-    description: "This Pokémon uses its flying ability to quickly chase",
-  },
-  {
-    icon: IconNotification,
-    title: "Notifications",
-    description: "Combusken battles with the intensely hot flames it spews",
-  },
-];
-
 export function HeaderMegaMenu() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
-  const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
-  const { classes, theme } = useStyles();
+  const { classes, theme, cx } = useStyles();
+
+  const { pathname } = useRouter();
 
   const onLogout = () => {
     signOut();
   };
 
-  const links = mockdata.map((item) => (
-    <UnstyledButton className={classes.subLink} key={item.title}>
-      <Group noWrap align="flex-start">
-        <ThemeIcon size={34} variant="default" radius="md">
-          <item.icon size={22} color={theme.fn.primaryColor()} />
-        </ThemeIcon>
-        <div>
-          <Text size="sm" weight={500}>
-            {item.title}
-          </Text>
-          <Text size="xs" color="dimmed">
-            {item.description}
-          </Text>
-        </div>
-      </Group>
-    </UnstyledButton>
-  ));
-
+  console.log(pathname);
   return (
-    <Box pb={120}>
+    <Box
+      sx={{
+        position: "sticky",
+        top: 0,
+      }}
+    >
       <Header height={60} px="md">
-        <Group position="apart" sx={{ height: "100%" }}>
-          {/* <MantineLogo size={30} /> */}
-          <Logo
-            style={{
-              height: 30,
-            }}
-          />
+        <Container sx={{ height: "100%" }}>
+          <Group position="apart" align="center" sx={{ height: "100%" }}>
+            {/* <MantineLogo size={30} /> */}
+            <Logo
+              style={{
+                height: 30,
+              }}
+            />
 
-          <Group
-            sx={{ height: "100%" }}
-            spacing={0}
-            className={classes.hiddenMobile}
-          >
-            <a href="#" className={classes.link}>
-              Home
-            </a>
-            <HoverCard
-              width={600}
-              position="bottom"
-              radius="md"
-              shadow="md"
-              withinPortal
+            <Group
+              sx={{ height: "100%" }}
+              spacing={0}
+              className={classes.hiddenMobile}
             >
-              <HoverCard.Target>
-                <a href="#" className={classes.link}>
-                  <Center inline>
-                    <Box component="span" mr={5}>
-                      Features
-                    </Box>
-                    <IconChevronDown
-                      size={16}
-                      color={theme.fn.primaryColor()}
-                    />
-                  </Center>
-                </a>
-              </HoverCard.Target>
+              <Anchor
+                href="/"
+                className={cx(classes.link, [
+                  pathname === "/" && "active-link",
+                ])}
+                component={Link}
+              >
+                Produk
+              </Anchor>
 
-              <HoverCard.Dropdown sx={{ overflow: "hidden" }}>
-                <Group position="apart" px="md">
-                  <Text weight={500}>Features</Text>
-                  <Anchor href="#" size="xs">
-                    View all
-                  </Anchor>
-                </Group>
+              <Anchor
+                href="/orders"
+                className={cx(classes.link, [
+                  pathname === "/orders" && "active-link",
+                ])}
+                component={Link}
+              >
+                Order
+              </Anchor>
+              <Anchor
+                href="/customers"
+                className={cx(classes.link, [
+                  pathname === "/customers" && "active-link",
+                ])}
+                component={Link}
+              >
+                Pelanggan
+              </Anchor>
+            </Group>
 
-                <Divider
-                  my="sm"
-                  mx="-md"
-                  color={theme.colorScheme === "dark" ? "dark.5" : "gray.1"}
-                />
+            <Group className={classes.hiddenMobile}>
+              <Button
+                color="red"
+                variant="subtle"
+                leftIcon={<IconLogout size={14} />}
+                onClick={onLogout}
+              >
+                Keluar
+              </Button>
+            </Group>
 
-                <SimpleGrid cols={2} spacing={0}>
-                  {links}
-                </SimpleGrid>
-
-                <div className={classes.dropdownFooter}>
-                  <Group position="apart">
-                    <div>
-                      <Text weight={500} size="sm">
-                        Get started
-                      </Text>
-                      <Text size="xs" color="dimmed">
-                        Their food sources have decreased, and their numbers
-                      </Text>
-                    </div>
-                    <Button variant="default">Get started</Button>
-                  </Group>
-                </div>
-              </HoverCard.Dropdown>
-            </HoverCard>
-            <a href="#" className={classes.link}>
-              Learn
-            </a>
-            <a href="#" className={classes.link}>
-              Academy
-            </a>
+            <Burger
+              opened={drawerOpened}
+              onClick={toggleDrawer}
+              className={classes.hiddenDesktop}
+            />
           </Group>
-
-          <Group className={classes.hiddenMobile}>
-            <Button
-              color="red"
-              variant="subtle"
-              leftIcon={<IconLogout size={14} />}
-              onClick={onLogout}
-            >
-              Keluar
-            </Button>
-          </Group>
-
-          <Burger
-            opened={drawerOpened}
-            onClick={toggleDrawer}
-            className={classes.hiddenDesktop}
-          />
-        </Group>
+        </Container>
       </Header>
 
       <Drawer
@@ -276,24 +187,32 @@ export function HeaderMegaMenu() {
             color={theme.colorScheme === "dark" ? "dark.5" : "gray.1"}
           />
 
-          <a href="#" className={classes.link}>
-            Home
-          </a>
-          <UnstyledButton className={classes.link} onClick={toggleLinks}>
-            <Center inline>
-              <Box component="span" mr={5}>
-                Features
-              </Box>
-              <IconChevronDown size={16} color={theme.fn.primaryColor()} />
-            </Center>
-          </UnstyledButton>
-          <Collapse in={linksOpened}>{links}</Collapse>
-          <a href="#" className={classes.link}>
-            Learn
-          </a>
-          <a href="#" className={classes.link}>
-            Academy
-          </a>
+          <Anchor
+            href="/"
+            className={cx(classes.link, [pathname === "/" && "active-link"])}
+            component={Link}
+          >
+            Produk
+          </Anchor>
+
+          <Anchor
+            href="/orders"
+            className={cx(classes.link, [
+              pathname === "/orders" && "active-link",
+            ])}
+            component={Link}
+          >
+            Order
+          </Anchor>
+          <Anchor
+            href="/customers"
+            className={cx(classes.link, [
+              pathname === "/customers" && "active-link",
+            ])}
+            component={Link}
+          >
+            Pelanggan
+          </Anchor>
 
           <Divider
             my="sm"

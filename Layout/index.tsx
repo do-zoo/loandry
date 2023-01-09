@@ -1,14 +1,17 @@
+import { Box, Container } from "@mantine/core";
 import React from "react";
 import { HeaderMegaMenu } from "../components/Navbar";
-import { useSession } from "next-auth/react";
-import { Box } from "@mantine/core";
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div>
+    <Box
+      sx={{
+        minHeight: "100vh",
+      }}
+    >
       <HeaderMegaMenu />
-      {children}
-    </div>
+      <Container py="md">{children}</Container>
+    </Box>
   );
 }
 

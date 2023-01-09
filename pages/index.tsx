@@ -1,5 +1,5 @@
+import { Box, Stack, Title } from "@mantine/core";
 import { unstable_getServerSession } from "next-auth";
-import { useSession } from "next-auth/react";
 import { authOptions } from "./api/auth/[...nextauth]";
 
 export async function getServerSideProps(context: any) {
@@ -24,9 +24,12 @@ export async function getServerSideProps(context: any) {
 }
 
 function Home() {
-  const { data: session } = useSession();
-  console.log(session);
-  return <div>Home</div>;
+  return (
+    <Stack spacing="lg">
+      <Title order={3}>Daftar produk</Title>
+      <Box>Daftar produk</Box>
+    </Stack>
+  );
 }
 
 export default Home;
