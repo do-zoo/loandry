@@ -1,7 +1,7 @@
+import { dbConnect } from "@/middlewares/mongodb";
+import { UserModel } from "@/models/index";
+import { ResponseFuncs } from "@/utils/types";
 import { NextApiRequest, NextApiResponse } from "next";
-import { dbConnect } from "../../middlewares";
-import { UserModel } from "../../models";
-import { ResponseFuncs } from "../../utils/types";
 
 // ----------------------------------------------------------------------
 const matchPass = (password: string, confirmPassword: string): boolean =>

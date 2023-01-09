@@ -1,8 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { dbConnect } from "@/middlewares/mongodb";
+import { WeightModel } from "@/models/index";
+import { ResponseFuncs } from "@/utils/types";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { ResponseFuncs } from "../../../utils/types";
-import { dbConnect } from "../../../middlewares";
-import { WeightModel } from "../../../models";
 
 type Data = {
   name: string;

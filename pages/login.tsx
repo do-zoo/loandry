@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { Box } from "@mantine/core";
-import { LoginForm } from "../components/Form";
 import { useSession } from "next-auth/react";
 import Router from "next/router";
+import { LoginForm } from "@/components/Form";
 
 function Login() {
   const { data: session } = useSession();

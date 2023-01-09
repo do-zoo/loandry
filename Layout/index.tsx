@@ -1,6 +1,6 @@
+import { HeaderMegaMenu } from "@/components/Navbar";
 import { Box, Container } from "@mantine/core";
 import React from "react";
-import { HeaderMegaMenu } from "../components/Navbar";
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (

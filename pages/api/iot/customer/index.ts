@@ -1,9 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { dbConnect } from "@/middlewares/mongodb";
+import { CustomerModel } from "@/models/index";
+import { ResponseFuncs } from "@/utils/types";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { ResponseFuncs } from "../../../../utils/types";
-import { dbConnect } from "../../../../middlewares";
-import { CustomerModel } from "../../../../models/customer/customer.model";
-import { RFIDModel } from "../../../../models";
 
 type Data = {
   name: string;

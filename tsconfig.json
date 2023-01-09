@@ -18,6 +18,20 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/components/*": ["components/*"],
+      "@/hooks/*": ["hooks/*"],
+      "@/middlewares/*": ["middlewares/*"],
+      "@/configs/*": ["configs/*"],
+      "@/assets/*": ["assets/*"],
+      "@/layout/*": ["Layout/*"],
+      "@/models/*": ["models/*"],
+      "@/services/*": ["services/*"],
+      "@/types/*": ["types/*"],
+      "@/utils/*": ["utils/*"],
+      "@/variables/*": ["variables/*"],
+    }
   },
   "include": [
     "next-env.d.ts",

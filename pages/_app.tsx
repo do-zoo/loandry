@@ -1,12 +1,12 @@
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { MantineProvider } from "@mantine/core";
-import Layout from "../Layout";
 import { SessionProvider } from "next-auth/react";
 import { QueryClientProvider } from "react-query";
 import { useEffect } from "react";
-import queryClient from "../configs/react-query";
-import { Auth } from "../components/Auth";
+import { Auth } from "@/components/Auth";
+import queryClient from "@/configs/react-query";
+import Layout from "../Layout";
 
 export default function App(props: AppProps) {
   const {
