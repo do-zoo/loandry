@@ -3,6 +3,7 @@ import { Box } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import Router from "next/router";
 import { LoginForm } from "@/components/Form";
+import Head from "next/head";
 
 function Login() {
   const { data: session } = useSession();
@@ -14,9 +15,14 @@ function Login() {
   }, [session]);
 
   return (
-    <Box>
-      <LoginForm />
-    </Box>
+    <>
+      <Head>
+        <title>Selamat Datang | {process.env.NEXT_PUBLIC_APP_NAME}</title>
+      </Head>
+      <Box>
+        <LoginForm />
+      </Box>
+    </>
   );
 }
 
