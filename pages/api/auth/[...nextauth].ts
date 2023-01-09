@@ -91,6 +91,15 @@ export const authOptions: AuthOptions = {
   // jwt: {
   //   secret: process.env.JWT_SECRET,
   // },
+  secret: process.env.JWT_SECRET,
+  jwt: {
+    // The maximum age of the NextAuth.js issued JWT in seconds.
+    // Defaults to `session.maxAge`.
+    maxAge: 60 * 60 * 24 * 30,
+    // You can define your own encode/decode functions for signing and encryption
+    // async encode() {},
+    // async decode() {},
+  },
 
   session: {
     strategy: "jwt",
@@ -100,7 +109,6 @@ export const authOptions: AuthOptions = {
       return randomUUID?.() ?? randomBytes(32).toString("hex");
     },
   },
-  secret: process.env.JWT_SECRET,
 
   pages: {
     signIn: "/login",
