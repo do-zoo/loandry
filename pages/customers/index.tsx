@@ -1,9 +1,7 @@
-import MyTable from "@/components/Table";
-import CustomerTable from "@/components/Table/customer-table";
+import { CustomerTable } from "@/components/Table";
 import { createCustomers } from "@/utils/faker";
 import { Box, Stack, Title } from "@mantine/core";
 import Head from "next/head";
-import React from "react";
 
 function Customers() {
   return (

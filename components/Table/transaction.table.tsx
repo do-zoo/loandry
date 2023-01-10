@@ -5,14 +5,14 @@ import {
   localeSexToId,
 } from "@/utils/index";
 import { customerKeys } from "@/variables/index";
-import { Center, Pagination, ScrollArea, Stack, Table } from "@mantine/core";
 import { useMemo } from "react";
+import BaseTable from "./_base-table";
 
 interface IProps {
   customers: ICustomer[];
 }
 
-function CustomerTable({ customers }: IProps) {
+export function TransactionTable({ customers }: IProps) {
   const tableHead = useMemo(() => {
     return customerKeys.reduce((acc, cur) => {
       const value = generateCustomerLabel(cur);
@@ -44,31 +44,16 @@ function CustomerTable({ customers }: IProps) {
   ));
 
   return (
-    <Stack>
-      <ScrollArea offsetScrollbars type="always">
-        <Table
-          striped
-          withBorder
-          horizontalSpacing="md"
-          verticalSpacing="md"
-          mb="sm"
-        >
-          <thead>
-            <tr>
-              <th>No</th>
-              {tableHead.map((v, i) => (
-                <th key={i}>{v.value}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>{rows}</tbody>
-        </Table>
-      </ScrollArea>
-      <Center>
-        <Pagination total={10} />
-      </Center>
-    </Stack>
+    <BaseTable>
+      <thead>
+        <tr>
+          <th>No</th>
+          {tableHead.map((v, i) => (
+            <th key={i}>{v.value}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>{rows}</tbody>
+    </BaseTable>
   );
 }
-
-export default CustomerTable;
