@@ -1,4 +1,3 @@
-import MyTable from "@/components/Table";
 import { Box, Stack, Title } from "@mantine/core";
 import Head from "next/head";
 import React from "react";
@@ -11,9 +10,7 @@ function Orders() {
       </Head>
       <Stack spacing="lg">
         <Title order={3}>Daftar Pesanan</Title>
-        <Box>
-          <MyTable />
-        </Box>
+        <Box>{/* <MyTable /> */}</Box>
       </Stack>
     </>
   );

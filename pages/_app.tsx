@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { Auth } from "@/components/Auth";
 import queryClient from "@/configs/react-query";
 import Layout from "../Layout";
+import { RouterTransition } from "@/components/RouterTransition";
 
 export default function App(props: AppProps) {
   const {
@@ -23,7 +24,6 @@ export default function App(props: AppProps) {
   return (
     <>
       <Head>
-        <title>Page title</title>
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
@@ -66,6 +66,7 @@ export default function App(props: AppProps) {
           }),
         }}
       >
+        <RouterTransition />
         <QueryClientProvider client={queryClient}>
           <SessionProvider session={session}>
             {router.pathname !== "/login" ? (
