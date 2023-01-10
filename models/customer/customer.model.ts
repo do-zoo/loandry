@@ -12,16 +12,13 @@ const CustomerSchema: Schema = new Schema({
   name: {
     type: String,
   },
-  gender: {
-    type: String,
-  },
-  birth: {
+  sex: {
     type: String,
   },
   place_of_birth: {
     type: String,
   },
-  date_of_birth: {
+  birth_date: {
     type: String,
   },
   email: {

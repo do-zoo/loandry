@@ -53,7 +53,9 @@ export default function App(props: AppProps) {
                   : theme.black,
               lineHeight: theme.lineHeight,
             },
-
+            td: {
+              whiteSpace: "nowrap",
+            },
             ".active-link": {
               color: theme.colors.blue,
             },

@@ -128,6 +128,9 @@ export function HeaderMegaMenu() {
                   pathname === "/" && "active-link",
                 ])}
                 component={Link}
+                onClick={() => {
+                  closeDrawer();
+                }}
               >
                 Produk
               </Anchor>
@@ -138,6 +141,9 @@ export function HeaderMegaMenu() {
                   pathname === "/orders" && "active-link",
                 ])}
                 component={Link}
+                onClick={() => {
+                  closeDrawer();
+                }}
               >
                 Order
               </Anchor>
@@ -147,6 +153,9 @@ export function HeaderMegaMenu() {
                   pathname === "/customers" && "active-link",
                 ])}
                 component={Link}
+                onClick={() => {
+                  closeDrawer();
+                }}
               >
                 Pelanggan
               </Anchor>
@@ -191,6 +200,9 @@ export function HeaderMegaMenu() {
             href="/"
             className={cx(classes.link, [pathname === "/" && "active-link"])}
             component={Link}
+            onClick={() => {
+              closeDrawer();
+            }}
           >
             Produk
           </Anchor>
@@ -201,6 +213,9 @@ export function HeaderMegaMenu() {
               pathname === "/orders" && "active-link",
             ])}
             component={Link}
+            onClick={() => {
+              closeDrawer();
+            }}
           >
             Order
           </Anchor>
@@ -210,6 +225,9 @@ export function HeaderMegaMenu() {
               pathname === "/customers" && "active-link",
             ])}
             component={Link}
+            onClick={() => {
+              closeDrawer();
+            }}
           >
             Pelanggan
           </Anchor>

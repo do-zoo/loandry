@@ -1,3 +1,6 @@
+import MyTable from "@/components/Table";
+import CustomerTable from "@/components/Table/customer-table";
+import { createCustomers } from "@/utils/faker";
 import { Box, Stack, Title } from "@mantine/core";
 import Head from "next/head";
 import React from "react";
@@ -10,7 +13,9 @@ function Customers() {
       </Head>
       <Stack spacing="lg">
         <Title order={3}>Daftar Pelanggan</Title>
-        <Box>Daftar Pelanggan</Box>
+        <Box>
+          <CustomerTable customers={createCustomers(10)} />
+        </Box>
       </Stack>
     </>
   );
