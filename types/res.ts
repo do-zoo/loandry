@@ -12,7 +12,7 @@ export interface ICustomer {
   createdAt: Date;
   updatedAt: Date;
 }
-export type CustomerKes = keyof ICustomer;
+export type CustomerKeys = keyof ICustomer;
 
 export interface ITransaction {
   _id: string;
@@ -24,9 +24,9 @@ export interface ITransaction {
   product_id: string;
   product_name: string;
   product_price: number;
-  total_amount: Number;
+  total_amount: number;
   due_date: Date;
   createdAt: Date;
   updatedAt: Date;
 }
-export type TransactionKes = keyof ITransaction;
+export type TransactionKeys = keyof ITransaction;

@@ -1,32 +1,33 @@
-import { ICustomer } from "@/types/res";
+import { ICustomer, ITransaction } from "@/types/res";
 import {
-  ICustomerLabel,
+  ITransactionLabel,
   generateCustomerLabel,
+  generateTransactionLabel,
   localeSexToId,
 } from "@/utils/index";
-import { customerKeys } from "@/variables/index";
+import { transactionKeys } from "@/variables/index";
 import { useMemo } from "react";
 import BaseTable from "./_base-table";
 
 interface IProps {
-  customers: ICustomer[];
+  transactions: ITransaction[];
 }
 
-export function TransactionTable({ customers }: IProps) {
+export function TransactionTable({ transactions }: IProps) {
   const tableHead = useMemo(() => {
-    return customerKeys.reduce((acc, cur) => {
-      const value = generateCustomerLabel(cur);
+    return transactionKeys.reduce((acc, cur) => {
+      const value = generateTransactionLabel(cur);
       if (value) {
         acc.push(value);
       }
       return acc;
-    }, [] as ICustomerLabel[]);
+    }, [] as ITransactionLabel[]);
   }, []);
 
-  const rows = customers.map((customer, i) => (
-    <tr key={customer._id}>
+  const rows = transactions.map((transaction, i) => (
+    <tr key={transaction._id}>
       {tableHead.map((v, i) => {
-        const value = customer[v.key];
+        const value = transaction[v.key];
         if (value instanceof Date) {
           return (
             <td key={i}>

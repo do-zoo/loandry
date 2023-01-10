@@ -1,4 +1,4 @@
-import { CustomerKes } from "@/types/res";
+import { CustomerKeys, TransactionKeys } from "@/types/res";
 
 export const customerKeys = [
   "_id",
@@ -11,4 +11,19 @@ export const customerKeys = [
   "email",
   "phone",
   "rfid_used",
-] satisfies CustomerKes[];
+] satisfies CustomerKeys[];
+
+export const transactionKeys = [
+  "_id",
+  "invoice",
+  "createdAt",
+  "status",
+  "customer_id",
+  "customer_name",
+  "quantity",
+  "product_id",
+  "product_name",
+  "product_price",
+  "total_amount",
+  "due_date",
+] satisfies TransactionKeys[];

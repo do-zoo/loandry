@@ -136,9 +136,9 @@ export function HeaderMegaMenu() {
               </Anchor>
 
               <Anchor
-                href="/orders"
+                href="/transactions"
                 className={cx(classes.link, [
-                  pathname === "/orders" && "active-link",
+                  pathname === "/transactions" && "active-link",
                 ])}
                 component={Link}
                 onClick={() => {
@@ -208,9 +208,9 @@ export function HeaderMegaMenu() {
           </Anchor>
 
           <Anchor
-            href="/orders"
+            href="/transactions"
             className={cx(classes.link, [
-              pathname === "/orders" && "active-link",
+              pathname === "/transactions" && "active-link",
             ])}
             component={Link}
             onClick={() => {

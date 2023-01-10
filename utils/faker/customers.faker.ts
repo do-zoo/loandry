@@ -1,35 +1,41 @@
 import { ICustomer } from "@/types/res";
 import { faker } from "@faker-js/faker/locale/id_ID";
-import {
-  FakerLastName,
-  fakerCreatedAt,
-  fakerFirstName,
-  fakerUpdatedAt,
-} from "./_base.faker";
 
 // type SubscriptionTier = "free" | "basic" | "business";
 
 function createRandomCustomer(): ICustomer {
   const sex = faker.name.sexType();
+
+  const firstName = faker.name.firstName(sex);
+  const lastName = faker.name.lastName();
+
   const email = faker.helpers.unique(faker.internet.email, [
-    fakerFirstName,
-    FakerLastName,
+    firstName,
+    lastName,
   ]);
+  const range = faker.helpers.arrayElement([1, 2, 3, 4, 0]);
+
   const nisn = faker.helpers.replaceSymbols("##########");
+  const createdAt = faker.date.between(
+    "2020-01-01T00:00:00.000Z",
+    "2030-01-01T00:00:00.000Z"
+  );
+
+  const updatedAt = faker.date.future(range, createdAt);
 
   return {
     _id: faker.datatype.uuid(),
     rfid: faker.helpers.replaceSymbols("******"),
     nisn,
-    name: fakerFirstName + " " + FakerLastName,
+    name: firstName + " " + lastName,
     sex,
     place_of_birth: faker.address.cityName(),
     birth_date: faker.date.birthdate({ min: 18, max: 65, mode: "age" }),
     email,
     phone: faker.phone.number("+628##########"),
     rfid_used: faker.datatype.number({ min: 0, max: 1 }),
-    createdAt: fakerCreatedAt,
-    updatedAt: fakerUpdatedAt,
+    createdAt,
+    updatedAt,
   };
 }
 

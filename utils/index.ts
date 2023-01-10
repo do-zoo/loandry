@@ -1,13 +1,14 @@
-import { CustomerKes, ICustomer } from "@/types/res";
+import { CustomerKeys, ICustomer, TransactionKeys } from "@/types/res";
 
 export const isDev = process.env.NODE_ENV === "development";
 
 export interface ICustomerLabel {
-  key: CustomerKes;
+  key: CustomerKeys;
   value: string;
 }
-
-export function generateCustomerLabel(key: CustomerKes): ICustomerLabel | null {
+export function generateCustomerLabel(
+  key: CustomerKeys
+): ICustomerLabel | null {
   switch (key) {
     case "birth_date":
       return {
@@ -49,6 +50,68 @@ export function generateCustomerLabel(key: CustomerKes): ICustomerLabel | null {
       return {
         key,
         value: "Jenis Kelamin",
+      };
+    default:
+      return null;
+  }
+}
+
+export interface ITransactionLabel {
+  key: TransactionKeys;
+  value: string;
+}
+
+export function generateTransactionLabel(
+  key: TransactionKeys
+): ITransactionLabel | null {
+  switch (key) {
+    case "customer_name":
+      return {
+        key,
+        value: "Nama Pelanggan",
+      };
+    case "due_date":
+      return {
+        key,
+        value: "Tanggal Pengambilan",
+      };
+
+    case "invoice":
+      return {
+        key,
+        value: "Invoice",
+      };
+
+    case "createdAt":
+      return {
+        key,
+        value: "Tanggal Transaksi",
+      };
+
+    case "product_name":
+      return {
+        key,
+        value: "Nama Produk",
+      };
+    case "product_price":
+      return {
+        key,
+        value: "Harga",
+      };
+    case "quantity":
+      return {
+        key,
+        value: "Kuantitas",
+      };
+    case "status":
+      return {
+        key,
+        value: "Status",
+      };
+    case "total_amount":
+      return {
+        key,
+        value: "Total",
       };
     default:
       return null;
