@@ -25,7 +25,6 @@ export function CustomerTable({ customers }: IProps) {
 
   const rows = customers.map((customer, i) => (
     <tr key={customer._id}>
-      <td>{i + 1}</td>
       {tableHead.map((v, i) => {
         const value = customer[v.key];
         if (value instanceof Date) {
@@ -47,7 +46,6 @@ export function CustomerTable({ customers }: IProps) {
     <BaseTable>
       <thead>
         <tr>
-          <th>No</th>
           {tableHead.map((v, i) => (
             <th key={i}>{v.value}</th>
           ))}
