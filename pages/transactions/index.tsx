@@ -8,12 +8,15 @@ function Orders() {
   return (
     <>
       <Head>
-        <title>Pesanan | {process.env.NEXT_PUBLIC_APP_NAME}</title>
+        <title>Transaksi | {process.env.NEXT_PUBLIC_APP_NAME}</title>
       </Head>
       <Stack spacing="lg">
         <Group position="apart">
-          <Title order={3}>Daftar Pesanan</Title>
-          <Button>Pesanan Baru</Button>
+          <Title order={3}>Daftar Transaksi</Title>
+          <Group>
+            <Button color="green">Selesaikan Transaksi</Button>
+            <Button>Transaksi Baru</Button>
+          </Group>
         </Group>
         <Box>
           <TransactionTable transactions={createTransactions(10)} />

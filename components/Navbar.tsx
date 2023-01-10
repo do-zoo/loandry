@@ -145,7 +145,7 @@ export function HeaderMegaMenu() {
                   closeDrawer();
                 }}
               >
-                Order
+                Transaksi
               </Anchor>
               <Anchor
                 href="/customers"
@@ -217,7 +217,7 @@ export function HeaderMegaMenu() {
               closeDrawer();
             }}
           >
-            Order
+            Transaksi
           </Anchor>
           <Anchor
             href="/customers"
