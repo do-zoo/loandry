@@ -9,5 +9,24 @@ export interface ICustomer {
   email: string;
   phone: string;
   rfid_used: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 export type CustomerKes = keyof ICustomer;
+
+export interface ITransaction {
+  _id: string;
+  invoice: string;
+  status: string; //need to update
+  customer_id: string;
+  customer_name: string;
+  quantity: number;
+  product_id: string;
+  product_name: string;
+  product_price: number;
+  total_amount: Number;
+  due_date: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+export type TransactionKes = keyof ITransaction;
