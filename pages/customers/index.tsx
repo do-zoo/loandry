@@ -1,4 +1,3 @@
-import { RFIdSuccess } from '@/components/Modals';
 import { CustomerTable } from '@/components/Table';
 import { createCustomers } from '@/utils/faker';
 import { Box, Button, Group, Stack, Title } from '@mantine/core';
@@ -19,7 +18,7 @@ function Customers() {
           <CustomerTable customers={createCustomers(10)} />
         </Box>
       </Stack>
-      <RFIdSuccess />
+      {/* <RFIdSuccess /> */}
     </>
   );
 }
