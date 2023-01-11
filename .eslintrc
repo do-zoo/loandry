@@ -1,0 +1,38 @@
+{
+    "env": {
+      "browser": true,
+      "es6": true,
+      "node": true,
+      "jest": true
+    },
+    "extends": ["next", "next/core-web-vitals"],
+    "overrides": [
+      {
+        "files": ["**/*.ts", "**/*.tsx"],
+        "env": {
+          "browser": true,
+          "es6": true,
+          "node": true
+        },
+        "plugins": ["@typescript-eslint"],
+        "extends": [
+          "next",
+          "next/core-web-vitals",
+          "plugin:@typescript-eslint/recommended"
+        ],
+        "rules": {
+          "@next/next/no-img-element": "off",
+          "@typescript-eslint/no-explicit-any": "off"
+        }
+      },
+      {
+        "files": [
+          "**/__tests__/**/*.[jt]s?(x)",
+          "**/?(*.)+(spec|test).[jt]s?(x)"
+        ],
+        "plugins": ["testing-library"],
+        "extends": ["plugin:testing-library/react"]
+      }
+    ]
+  }
+  

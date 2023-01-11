@@ -1,4 +1,4 @@
-import { ITransaction } from "@/types/res";
+import { ITransaction, TStatus } from "@/types/res";
 import { faker } from "@faker-js/faker/locale/id_ID";
 
 // type SubscriptionTier = "free" | "basic" | "business";
@@ -15,11 +15,10 @@ function createRandomTransaction(): ITransaction {
   const quantity = faker.datatype.number({ min: 1, max: 20 });
 
   const status = faker.helpers.arrayElement([
-    "waiting",
     "success",
-    "pending",
     "canceled",
-  ]);
+    "progress",
+  ]) satisfies TStatus;
 
   const code = faker.helpers.replaceSymbols("********");
   const product = faker.helpers.arrayElement([

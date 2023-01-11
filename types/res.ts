@@ -17,7 +17,7 @@ export type CustomerKeys = keyof ICustomer;
 export interface ITransaction {
   _id: string;
   invoice: string;
-  status: string; //need to update
+  status: TStatus;
   customer_id: string;
   customer_name: string;
   quantity: number;
@@ -30,3 +30,5 @@ export interface ITransaction {
   updatedAt: Date;
 }
 export type TransactionKeys = keyof ITransaction;
+
+export type TStatus = "success" | "canceled" | "progress";

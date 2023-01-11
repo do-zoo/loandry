@@ -1,4 +1,4 @@
-import { CustomerKeys, ICustomer, TransactionKeys } from "@/types/res";
+import { CustomerKeys, ICustomer, TStatus, TransactionKeys } from "@/types/res";
 
 export const isDev = process.env.NODE_ENV === "development";
 
@@ -124,6 +124,22 @@ export function localeSexToId(sex: string): "laki-laki" | "perempuan" | null {
       return "perempuan";
     case "male":
       return "laki-laki";
+
+    default:
+      return null;
+  }
+}
+
+export function localeStatusToId(
+  status: TStatus
+): "Batal" | "Selesai" | "Sedang Diproses" | null {
+  switch (status) {
+    case "canceled":
+      return "Batal";
+    case "progress":
+      return "Sedang Diproses";
+    case "success":
+      return "Selesai";
 
     default:
       return null;

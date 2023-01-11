@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import "./yup.locale";
+import "./_yup.locale";
 
 export const UserLoginSchema = yup
   .object()

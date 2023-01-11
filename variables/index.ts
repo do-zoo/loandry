@@ -1,4 +1,4 @@
-import { CustomerKeys, TransactionKeys } from "@/types/res";
+import { CustomerKeys, TStatus, TransactionKeys } from "@/types/res";
 
 export const customerKeys = [
   "_id",
@@ -27,3 +27,9 @@ export const transactionKeys = [
   "total_amount",
   "due_date",
 ] satisfies TransactionKeys[];
+
+export const transactionStatus = [
+  "success",
+  "canceled",
+  "progress",
+] satisfies TStatus[];
