@@ -15,7 +15,6 @@ import {
 import { DatePicker } from '@mantine/dates';
 import Head from 'next/head';
 import { useForm } from 'react-hook-form';
-import InputMask from 'react-input-mask';
 import 'dayjs/locale/id';
 
 function AddCustomer() {
@@ -48,8 +47,8 @@ function AddCustomer() {
                 placeholder="Masukan NISN"
                 label="NISN"
                 withAsterisk
-                component={InputMask}
-                mask="9999999999"
+                // component={InputMask}
+                // mask="9999999999"
               />
             </SimpleGrid>
             <SimpleGrid
@@ -93,8 +92,8 @@ function AddCustomer() {
                 placeholder="Masukan Nomor Telepon"
                 label="Nomor Telepon"
                 withAsterisk
-                component={InputMask}
-                mask={'+62 899-9999-9999'}
+                // component={InputMask}
+                // mask={'+62 899-9999-9999'}
               />
             </SimpleGrid>
           </Stack>

@@ -10,6 +10,8 @@ import {
 } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import ScannerIllustration from '@/assets/svg/scanner.svg';
+import { IconCircleCheck } from '@tabler/icons';
+import { useRouter } from 'next/router';
 
 const scan = keyframes({
   'from, to': { top: '50%' },
@@ -22,24 +24,51 @@ const scan = keyframes({
 const modalScannerStyles = createStyles((theme, _params, getRef) => ({
   scannerMessage: {
     textAlign: 'center',
+    paddingLeft: 50,
+    paddingRight: 50,
+  },
+  iconSuccess: {
+    color: theme.colors.green[5],
   },
 }));
 
 export function RFIdPreparation() {
   const [opened, setOpened] = useState(true);
   const [enableToScan, setEnableToScan] = useState<boolean>(false);
+  const [successScan, setSuccessScan] = useState<boolean>(false);
+  const [counter, setCounter] = useState<number>(3);
   const { classes } = modalScannerStyles();
+  const router = useRouter();
 
   useEffect(() => {
     if (enableToScan) {
       const timeOut = setTimeout(() => {
         setEnableToScan(false);
+        setSuccessScan(true);
       }, 10000);
       return () => {
         clearTimeout(timeOut);
       };
     }
   }, [enableToScan]);
+
+  useEffect(() => {
+    if (successScan && counter !== 0) {
+      const interval = setInterval(() => {
+        setCounter(prev => prev - 1);
+      }, 1000);
+      return () => {
+        clearInterval(interval);
+      };
+    }
+  }, [successScan, counter]);
+
+  useEffect(() => {
+    if (counter === 0 && opened) {
+      setOpened(false);
+      router.push('/customers/now');
+    }
+  }, [counter, router, opened]);
 
   return (
     <Modal
@@ -51,14 +80,25 @@ export function RFIdPreparation() {
     >
       <Stack align="center" my={45}>
         <Title order={3} transform="uppercase">
-          Pindai kartu
+          {successScan ? 'Sukses' : 'Pindai kartu'}
         </Title>
         <Box>
-          <RFIDScanner enableToScan={enableToScan} />
+          {successScan ? (
+            <IconCircleCheck size={200} className={classes.iconSuccess} />
+          ) : (
+            <RFIDScanner enableToScan={enableToScan} />
+          )}
         </Box>
         <Stack align="center" spacing="xl">
           <Stack align="center" spacing="xs" className={classes.scannerMessage}>
-            {enableToScan ? (
+            {successScan ? (
+              <>
+                <Text weight="bold" transform="capitalize">
+                  Selamat Kartu Siap Digunakan!!!
+                </Text>
+                <Text>Klik Tombol Lanjutkan Untuk mendaftarkan kartu</Text>
+              </>
+            ) : enableToScan ? (
               <>
                 <Text weight="bold" transform="capitalize">
                   Memindai
@@ -75,14 +115,25 @@ export function RFIdPreparation() {
             )}
           </Stack>
 
-          <Button
-            onClick={() => {
-              setEnableToScan(true);
-            }}
-            loading={enableToScan}
-          >
-            {enableToScan ? 'Memindai' : 'Pindai Sekarang'}
-          </Button>
+          {successScan ? (
+            <Button
+              onClick={() => {
+                setEnableToScan(true);
+              }}
+              color="green"
+            >
+              Lanjutkan {counter !== 0 && counter}
+            </Button>
+          ) : (
+            <Button
+              onClick={() => {
+                setEnableToScan(true);
+              }}
+              loading={enableToScan}
+            >
+              {enableToScan ? 'Memindai' : 'Pindai Sekarang'}
+            </Button>
+          )}
         </Stack>
       </Stack>
       {/* Modal content */}
