@@ -12,6 +12,9 @@ import { useEffect, useState } from 'react';
 import ScannerIllustration from '@/assets/svg/scanner.svg';
 import { IconCircleCheck } from '@tabler/icons';
 import { useRouter } from 'next/router';
+import { useAppDispatch, useAppSelector } from '@/hooks/redux';
+import { setModalPrepare } from '@/stores/features/modal/modal.slice';
+import { useCallback } from 'react';
 
 const scan = keyframes({
   'from, to': { top: '50%' },
@@ -32,13 +35,34 @@ const modalScannerStyles = createStyles((theme, _params, getRef) => ({
   },
 }));
 
+const COUNTER = 3;
+
 export function RFIdPreparation() {
-  const [opened, setOpened] = useState(true);
-  const [enableToScan, setEnableToScan] = useState<boolean>(false);
-  const [successScan, setSuccessScan] = useState<boolean>(false);
-  const [counter, setCounter] = useState<number>(3);
   const { classes } = modalScannerStyles();
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const {
+    modalPrepare: { visibility, data },
+  } = useAppSelector(state => state.modals);
+
+  const idleMessage = data?.message.filter(v => v.type === 'idle')[0];
+  const loadingMessage = data?.message.filter(v => v.type === 'loading')[0];
+  const successMessage = data?.message.filter(v => v.type === 'success')[0];
+
+  const [enableToScan, setEnableToScan] = useState<boolean>(false);
+  const [successScan, setSuccessScan] = useState<boolean>(false);
+  const [counter, setCounter] = useState<number>(COUNTER);
+
+  const handleCloseModal = useCallback(() => {
+    dispatch(
+      setModalPrepare({
+        visibility: false,
+        data: undefined,
+      })
+    );
+    setSuccessScan(false);
+    setCounter(COUNTER);
+  }, [dispatch]);
 
   useEffect(() => {
     if (enableToScan) {
@@ -64,17 +88,17 @@ export function RFIdPreparation() {
   }, [successScan, counter]);
 
   useEffect(() => {
-    if (counter === 0 && opened) {
-      setOpened(false);
+    if (counter === 0 && visibility) {
+      handleCloseModal();
       router.push('/customers/now');
     }
-  }, [counter, router, opened]);
+  }, [counter, handleCloseModal, router, visibility]);
 
   return (
     <Modal
       centered
-      opened={opened}
-      onClose={() => setOpened(false)}
+      opened={visibility}
+      onClose={handleCloseModal}
       withCloseButton={false}
       overflow="inside"
     >
@@ -93,24 +117,27 @@ export function RFIdPreparation() {
           <Stack align="center" spacing="xs" className={classes.scannerMessage}>
             {successScan ? (
               <>
+                {/* success message */}
                 <Text weight="bold" transform="capitalize">
-                  Selamat Kartu Siap Digunakan!!!
+                  {successMessage?.message.title}
                 </Text>
-                <Text>Klik Tombol Lanjutkan Untuk mendaftarkan kartu</Text>
+                <Text>{successMessage?.message.text}</Text>
               </>
             ) : enableToScan ? (
+              // loading message
               <>
                 <Text weight="bold" transform="capitalize">
-                  Memindai
+                  {loadingMessage?.message.title}
                 </Text>
-                <Text>Dekatkan kartu anda ke RFID Scanner</Text>
+                <Text>{loadingMessage?.message.text}</Text>
               </>
             ) : (
+              // idle message
               <>
                 <Text weight="bold" transform="capitalize">
-                  Siapkan Kartu Anda
+                  {idleMessage?.message.title}
                 </Text>
-                <Text>Pastikan kartu Anda Baru</Text>
+                <Text>{idleMessage?.message.text}</Text>
               </>
             )}
           </Stack>
