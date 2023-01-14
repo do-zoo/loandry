@@ -89,10 +89,12 @@ function AddCustomer() {
                 label="Email"
                 withAsterisk
               />
-              <TextInput
+              <InputBase
                 placeholder="Masukan Nomor Telepon"
                 label="Nomor Telepon"
                 withAsterisk
+                component={InputMask}
+                mask={'+62 899-9999-9999'}
               />
             </SimpleGrid>
           </Stack>
