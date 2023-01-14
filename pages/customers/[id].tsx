@@ -43,13 +43,13 @@ function AddCustomer() {
                 withAsterisk
               />
 
-              <InputBase
+              {/* <InputBase
                 placeholder="Masukan NISN"
                 label="NISN"
                 withAsterisk
                 // component={InputMask}
                 // mask="9999999999"
-              />
+              /> */}
             </SimpleGrid>
             <SimpleGrid
               cols={2}

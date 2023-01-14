@@ -18,10 +18,24 @@ export const modalCreateCustomerMessage = {
       },
     },
     {
+      type: 'error',
+      message: {
+        title: 'Ups Terjadi Kesalahan',
+        text: 'Pastikan Anda mendekatkan kartu ke RFID Scanner dan Terhubung dengan Internet',
+      },
+    },
+    {
       type: 'success',
       message: {
         title: 'Selamat Kartu Siap Digunakan!!!',
         text: 'Klik Tombol Lanjutkan Untuk mendaftarkan kartu',
+      },
+    },
+    {
+      type: 'available',
+      message: {
+        title: 'Kartu Anda Sudah Digunakan',
+        text: 'Pastikan Kartu anda baru',
       },
     },
   ],

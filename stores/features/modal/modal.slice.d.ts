@@ -1,5 +1,5 @@
 export interface modalScannerMessage {
-  type: 'idle' | 'loading' | 'success';
+  type: 'idle' | 'loading' | 'success' | 'error' | 'available';
   message: {
     title: string;
     text: string;

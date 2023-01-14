@@ -1,4 +1,4 @@
-import { models, model, Schema } from "mongoose";
+import { models, model, Schema } from 'mongoose';
 
 const CustomerSchema: Schema = new Schema(
   {
@@ -6,9 +6,6 @@ const CustomerSchema: Schema = new Schema(
       type: String,
       required: true,
       unique: true,
-    },
-    nisn: {
-      type: String,
     },
     name: {
       type: String,
@@ -20,7 +17,7 @@ const CustomerSchema: Schema = new Schema(
       type: String,
     },
     birth_date: {
-      type: String,
+      type: Date,
     },
     email: {
       type: String,
@@ -39,4 +36,4 @@ const CustomerSchema: Schema = new Schema(
 );
 
 export const CustomerModel =
-  models.Customer || model("Customer", CustomerSchema);
+  models.Customer || model('Customer', CustomerSchema);
