@@ -1,3 +1,4 @@
+import { APP_NAME } from '@/variables/index';
 import { Box, Button, Group, Stack, Title } from '@mantine/core';
 import Head from 'next/head';
 
@@ -5,7 +6,7 @@ function Orders() {
   return (
     <>
       <Head>
-        <title>Transaksi | {process.env.NEXT_PUBLIC_APP_NAME}</title>
+        <title>Transaksi | {APP_NAME}</title>
       </Head>
       <Stack spacing="lg">
         <Group position="apart">

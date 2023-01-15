@@ -32,3 +32,5 @@ export const transactionStatus = [
   'canceled',
   'progress',
 ] satisfies TStatus[];
+
+export const APP_NAME = 'Loandry';

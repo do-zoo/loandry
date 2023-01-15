@@ -1,6 +1,7 @@
 import { CustomerService } from '@/services/customer.services';
 import { RfIdService } from '@/services/rfid.services';
 import { citiesOfIndonesia } from '@/variables/city-of-indonesia';
+import { APP_NAME } from '@/variables/index';
 import { CreateCustomerSchema } from '@/variables/schema';
 import {
   Button,
@@ -10,7 +11,7 @@ import {
   SimpleGrid,
   Stack,
   TextInput,
-  Title
+  Title,
 } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import { useForm, yupResolver } from '@mantine/form';
@@ -20,28 +21,6 @@ import type { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
-
-export const getServerSideProps: GetServerSideProps = async context => {
-  const { id = '' } = context.query;
-  const { data } = await RfIdService.getAvailableRfId();
-
-  const { rfid } = data ?? {};
-
-  if (rfid !== id) {
-    return {
-      redirect: {
-        destination: '/customers?',
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {
-      id,
-    }, // will be passed to the page component as props
-  };
-};
 
 interface IAddCustomerProps {
   id: string;
@@ -86,9 +65,7 @@ const AddCustomer: NextPage<IAddCustomerProps> = props => {
   return (
     <>
       <Head>
-        <title>
-          Tambah Pelanggan Baru | {process.env.NEXT_PUBLIC_APP_NAME}
-        </title>
+        <title>Tambah Pelanggan Baru | {APP_NAME}</title>
       </Head>
       <Container size="xs" w={'100%'} py="lg">
         <form onSubmit={onSubmit}>
@@ -183,6 +160,28 @@ const AddCustomer: NextPage<IAddCustomerProps> = props => {
       </Container>
     </>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async context => {
+  const { id = '' } = context.query;
+  const { data } = await RfIdService.getAvailableRfId();
+
+  const { rfid } = data ?? {};
+
+  if (rfid !== id) {
+    return {
+      redirect: {
+        destination: '/customers?',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      id,
+    }, // will be passed to the page component as props
+  };
 };
 
 export default AddCustomer;

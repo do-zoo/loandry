@@ -3,6 +3,7 @@ import { useAppDispatch } from '@/hooks/redux';
 import { CustomerService } from '@/services/customer.services';
 import { setModalPrepare } from '@/stores/features/modal/modal.slice';
 import { ICustomer } from '@/types/res';
+import { APP_NAME } from '@/variables/index';
 import { modalCreateCustomerMessage } from '@/variables/modal';
 import { Box, Button, Group, Stack, Title } from '@mantine/core';
 import Head from 'next/head';
@@ -24,7 +25,7 @@ function Customers({ data }: IProps) {
   return (
     <>
       <Head>
-        <title>Pelanggan | {process.env.NEXT_PUBLIC_APP_NAME}</title>
+        <title>Pelanggan | {APP_NAME}</title>
       </Head>
       <Stack spacing="xl">
         <Group position="apart">

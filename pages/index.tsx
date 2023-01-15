@@ -10,6 +10,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
 import { authOptions } from './api/auth/[...nextauth]';
+import { APP_NAME } from '../variables';
 
 interface IProps {
   products: IProduct[];
@@ -57,7 +58,7 @@ function Home({ products }: IProps) {
   return (
     <>
       <Head>
-        <title>Produk | {process.env.NEXT_PUBLIC_APP_NAME}</title>
+        <title>Produk | {APP_NAME}</title>
       </Head>
       <Stack spacing="lg">
         <Group align="center" position="apart">
