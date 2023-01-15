@@ -25,7 +25,7 @@ function Customers({ data }: IProps) {
   return (
     <>
       <Head>
-        <title>Pelanggan | {APP_NAME}</title>
+        <title>{`Pelanggan | ${APP_NAME}`}</title>
       </Head>
       <Stack spacing="xl">
         <Group position="apart">

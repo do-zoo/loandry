@@ -111,7 +111,7 @@ export function HeaderMegaMenu() {
           <Group position="apart" align="center" sx={{ height: '100%' }}>
             <Logo
               style={{
-                height: 30,
+                height: 60,
               }}
             />
 

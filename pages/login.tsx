@@ -18,7 +18,7 @@ function Login() {
   return (
     <>
       <Head>
-        <title>Selamat Datang | {APP_NAME}</title>
+        <title>{`Selamat Datang | ${APP_NAME}`}</title>
       </Head>
       <Box>
         <LoginForm />

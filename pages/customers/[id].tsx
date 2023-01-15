@@ -65,7 +65,7 @@ const AddCustomer: NextPage<IAddCustomerProps> = props => {
   return (
     <>
       <Head>
-        <title>Tambah Pelanggan Baru | {APP_NAME}</title>
+        <title>{`Tambah Pelanggan Baru | ${APP_NAME}`}</title>
       </Head>
       <Container size="xs" w={'100%'} py="lg">
         <form onSubmit={onSubmit}>

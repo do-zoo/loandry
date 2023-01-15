@@ -6,7 +6,7 @@ function Orders() {
   return (
     <>
       <Head>
-        <title>Transaksi | {APP_NAME}</title>
+        <title>{`Transaksi | ${APP_NAME}`}</title>
       </Head>
       <Stack spacing="lg">
         <Group position="apart">

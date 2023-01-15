@@ -58,7 +58,7 @@ function Home({ products }: IProps) {
   return (
     <>
       <Head>
-        <title>Produk | {APP_NAME}</title>
+        <title>{`Produk | ${APP_NAME}`}</title>
       </Head>
       <Stack spacing="lg">
         <Group align="center" position="apart">
