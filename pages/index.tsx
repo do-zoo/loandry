@@ -11,29 +11,6 @@ import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
 import { authOptions } from './api/auth/[...nextauth]';
 
-export async function getServerSideProps(context: any) {
-  const session = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions
-  );
-
-  const { data } = await ProductService.getAllProduct();
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: { session, products: data },
-  };
-}
-
 interface IProps {
   products: IProduct[];
 }
@@ -106,6 +83,29 @@ function Home({ products }: IProps) {
       <ModalProduct />
     </>
   );
+}
+
+export async function getServerSideProps(context: any) {
+  const session = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
+
+  const { data } = await ProductService.getAllProduct();
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session, products: data },
+  };
 }
 
 export default Home;
