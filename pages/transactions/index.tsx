@@ -1,5 +1,3 @@
-import { TransactionTable } from '@/components/Table';
-import { createTransactions } from '@/utils/faker';
 import { Box, Button, Group, Stack, Title } from '@mantine/core';
 import Head from 'next/head';
 
@@ -18,7 +16,7 @@ function Orders() {
           </Group>
         </Group>
         <Box>
-          <TransactionTable transactions={createTransactions(10)} />
+          {/* <TransactionTable transactions={createTransactions(10)} /> */}
         </Box>
       </Stack>
     </>

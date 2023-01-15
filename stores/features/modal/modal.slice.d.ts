@@ -1,3 +1,5 @@
+import { CreateProductData } from '@/services/product.services';
+
 export interface modalScannerMessage {
   type: 'idle' | 'loading' | 'success' | 'error' | 'available';
   message: {
@@ -16,6 +18,19 @@ export type ModalPrepare = BaseModal<{
   message: modalScannerMessage[];
 }>;
 
+interface DataCreateProduct {
+  type: 'create-product';
+  defaultValues: CreateProductData;
+}
+
+interface DataUpdateProduct {
+  type: 'update-product';
+  defaultValues: UpdateProductData;
+}
+
+export type ModalProduct = BaseModal<DataCreateProduct | DataUpdateProduct>;
+
 export interface ModalsState {
   modalPrepare: ModalPrepare;
+  modalProduct: ModalProduct;
 }

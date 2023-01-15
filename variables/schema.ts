@@ -128,3 +128,14 @@ export const CreateCustomerSchema = yup
       .label('Nomor Telpon'),
   })
   .required();
+
+export const ProductSchema = yup
+  .object()
+  .shape({
+    name: yup.string().required().ensure().label('Nama Produk'),
+    code: yup.string().required().ensure().label('Kode Produk'),
+    price: yup.number().required().label('Harga'),
+    unit: yup.string().required().label('Unit'),
+    image: yup.string().ensure().label('Gambar'),
+  })
+  .required();

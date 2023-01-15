@@ -13,6 +13,18 @@ export interface ICustomer {
 }
 export type CustomerKeys = keyof ICustomer;
 
+export interface IProduct {
+  _id: string;
+  code: string;
+  name: string;
+  price: number;
+  unit: 'kg' | 'pcs' | 'gram';
+  image: string;
+  createdAt: string;
+  updatedAt: string;
+}
+export type ProductKeys = keyof IProduct;
+
 export interface ITransaction {
   _id: string;
   invoice: string;

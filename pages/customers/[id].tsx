@@ -1,27 +1,25 @@
-import * as Yup from 'yup';
+import { CustomerService } from '@/services/customer.services';
 import { RfIdService } from '@/services/rfid.services';
 import { citiesOfIndonesia } from '@/variables/city-of-indonesia';
+import { CreateCustomerSchema } from '@/variables/schema';
 import {
   Button,
   Container,
-  InputBase,
   Radio,
   Select,
   SimpleGrid,
   Stack,
   TextInput,
-  Title,
+  Title
 } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
-import { useForm, hasLength, isNotEmpty, yupResolver } from '@mantine/form';
+import { useForm, yupResolver } from '@mantine/form';
+import dayjs from 'dayjs';
 import 'dayjs/locale/id';
 import type { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
-import dayjs from 'dayjs';
-import { CreateCustomerSchema } from '@/variables/schema';
-import { useMutation } from 'react-query';
-import { CustomerService } from '@/services/customer.services';
 import { useRouter } from 'next/router';
+import { useMutation } from 'react-query';
 
 export const getServerSideProps: GetServerSideProps = async context => {
   const { id = '' } = context.query;

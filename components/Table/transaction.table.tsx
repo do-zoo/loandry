@@ -43,10 +43,12 @@ export function TransactionTable({ transactions }: IProps) {
     <tr key={transaction._id}>
       {tableHead.map((v, i) => {
         const value = transaction[v.key];
-        if (value instanceof Date) {
+        if (typeof value === 'string' && Date.parse(value)) {
           return (
             <td key={i}>
-              {value.toLocaleString('id-ID', { dateStyle: 'full' })}
+              {new Date(value).toLocaleString('id-ID', {
+                dateStyle: 'long',
+              })}
             </td>
           );
         }
@@ -84,7 +86,7 @@ export function TransactionTable({ transactions }: IProps) {
   ));
 
   return (
-    <BaseTable>
+    <BaseTable length={8}>
       <thead>
         <tr>
           {tableHead.map((v, i) => (
