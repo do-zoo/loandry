@@ -106,12 +106,12 @@ export function HeaderMegaMenu() {
         top: 0,
       }}
     >
-      <Header height={60} px="md">
+      <Header height={60}>
         <Container sx={{ height: '100%' }}>
           <Group position="apart" align="center" sx={{ height: '100%' }}>
             <Logo
               style={{
-                height: 60,
+                height: 50,
               }}
             />
 
@@ -184,7 +184,7 @@ export function HeaderMegaMenu() {
         onClose={closeDrawer}
         size="100%"
         padding="md"
-        title="Navigation"
+        title="Loandry"
         className={classes.hiddenDesktop}
         zIndex={1000000}
       >
