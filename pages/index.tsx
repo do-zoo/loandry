@@ -68,7 +68,7 @@ function Home({ products }: IProps) {
         {products.length > 0 ? (
           <Grid>
             {products?.map(v => (
-              <Grid.Col span={4} key={v._id}>
+              <Grid.Col span={6} sm={4} md={3} key={v._id}>
                 <CardProduct
                   product={v}
                   onDelete={handleDelete}

@@ -41,7 +41,7 @@ export function CardProduct({ product, onDelete, onUpdate }: IProps) {
       </Card.Section>
       <Stack pt="md" spacing="xs">
         <Group noWrap position="apart">
-          <Text weight={500} pl="sm" transform="capitalize">
+          <Text weight={500} pl="sm" transform="capitalize" lineClamp={2}>
             {product.name}
           </Text>
           <Menu shadow="md" width={150} position="bottom-end">
