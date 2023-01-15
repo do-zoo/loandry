@@ -1,8 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { dbConnect } from "@/middlewares/mongodb";
-import { RFIDModel } from "@/models/index";
-import { ResponseFuncs } from "@/utils/types";
-import type { NextApiRequest, NextApiResponse } from "next";
+import { dbConnect } from '@/middlewares/mongodb';
+import { RFIDModel } from '@/models/index';
+import { ResponseFuncs } from '@/utils/types';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 type Data = {
   name: string;
@@ -19,12 +19,12 @@ export default async function handler(
     POST: async (req: NextApiRequest, res: NextApiResponse) => {
       const { rfid } = req.body;
       if (!rfid) {
-        return res.status(400).send({ message: "Gagal" });
+        return res.status(400).send({ message: 'Gagal' });
       }
       try {
         dbConnect(); // connect to database
         const availableRFID = await RFIDModel.findById(
-          "63bad69c0832798a96e47f3c"
+          '63bad69c0832798a96e47f3c'
         );
 
         availableRFID.rfid = rfid;
@@ -42,9 +42,24 @@ export default async function handler(
             });
           }
           return res.status(200).json({
-            message: "data updated successfully",
+            message: 'data updated successfully',
             data,
           });
+        });
+      } catch (err) {
+        return res.status(400).send({ err });
+      }
+    },
+    GET: async (req: NextApiRequest, res: NextApiResponse) => {
+      try {
+        dbConnect(); // connect to database
+        const availableRFID = await RFIDModel.findById(
+          '63bad69c0832798a96e47f3c'
+        );
+
+        return res.status(200).json({
+          message: 'data updated successfully',
+          data: availableRFID,
         });
       } catch (err) {
         return res.status(400).send({ err });
@@ -54,5 +69,5 @@ export default async function handler(
 
   const response = handleCase[method];
   if (response) response(req, res);
-  else res.status(400).json({ error: "No Response for This Request" });
+  else res.status(400).json({ error: 'No Response for This Request' });
 }

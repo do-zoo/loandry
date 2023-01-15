@@ -1,16 +1,15 @@
 export interface ICustomer {
   _id: string;
   rfid: string;
-  nisn: string;
   name: string;
   sex: string;
   place_of_birth: string;
-  birth_date: Date;
+  birth_date: string;
   email: string;
   phone: string;
   rfid_used: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 export type CustomerKeys = keyof ICustomer;
 
@@ -25,10 +24,10 @@ export interface ITransaction {
   product_name: string;
   product_price: number;
   total_amount: number;
-  due_date: Date;
-  createdAt: Date;
-  updatedAt: Date;
+  due_date: string;
+  createdAt: string;
+  updatedAt: string;
 }
 export type TransactionKeys = keyof ITransaction;
 
-export type TStatus = "success" | "canceled" | "progress";
+export type TStatus = 'success' | 'canceled' | 'progress';

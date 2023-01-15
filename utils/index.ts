@@ -1,6 +1,6 @@
-import { CustomerKeys, ICustomer, TStatus, TransactionKeys } from "@/types/res";
+import { CustomerKeys, ICustomer, TStatus, TransactionKeys } from '@/types/res';
 
-export const isDev = process.env.NODE_ENV === "development";
+export const isDev = process.env.NODE_ENV === 'development';
 
 export interface ICustomerLabel {
   key: CustomerKeys;
@@ -10,46 +10,41 @@ export function generateCustomerLabel(
   key: CustomerKeys
 ): ICustomerLabel | null {
   switch (key) {
-    case "birth_date":
+    case 'birth_date':
       return {
         key,
-        value: "Tanggal Lahir",
+        value: 'Tanggal Lahir',
       };
-    case "email":
+    case 'email':
       return {
         key,
-        value: "Email",
+        value: 'Email',
       };
-    case "name":
+    case 'name':
       return {
         key,
-        value: "Nama",
+        value: 'Nama',
       };
 
-    case "nisn":
+    case 'rfid':
       return {
         key,
-        value: "NISN",
+        value: 'Kode',
       };
-    case "rfid":
+    case 'phone':
       return {
         key,
-        value: "Kode",
+        value: 'Telepon',
       };
-    case "phone":
+    case 'place_of_birth':
       return {
         key,
-        value: "Telepon",
+        value: 'Tempat Lahir',
       };
-    case "place_of_birth":
+    case 'sex':
       return {
         key,
-        value: "Tempat Lahir",
-      };
-    case "sex":
-      return {
-        key,
-        value: "Jenis Kelamin",
+        value: 'Jenis Kelamin',
       };
     default:
       return null;
@@ -65,65 +60,65 @@ export function generateTransactionLabel(
   key: TransactionKeys
 ): ITransactionLabel | null {
   switch (key) {
-    case "customer_name":
+    case 'customer_name':
       return {
         key,
-        value: "Nama Pelanggan",
+        value: 'Nama Pelanggan',
       };
-    case "due_date":
+    case 'due_date':
       return {
         key,
-        value: "Tanggal Pengambilan",
-      };
-
-    case "invoice":
-      return {
-        key,
-        value: "Invoice",
+        value: 'Tanggal Pengambilan',
       };
 
-    case "createdAt":
+    case 'invoice':
       return {
         key,
-        value: "Tanggal Transaksi",
+        value: 'Invoice',
       };
 
-    case "product_name":
+    case 'createdAt':
       return {
         key,
-        value: "Nama Produk",
+        value: 'Tanggal Transaksi',
       };
-    case "product_price":
+
+    case 'product_name':
       return {
         key,
-        value: "Harga",
+        value: 'Nama Produk',
       };
-    case "quantity":
+    case 'product_price':
       return {
         key,
-        value: "Kuantitas",
+        value: 'Harga',
       };
-    case "status":
+    case 'quantity':
       return {
         key,
-        value: "Status",
+        value: 'Kuantitas',
       };
-    case "total_amount":
+    case 'status':
       return {
         key,
-        value: "Total",
+        value: 'Status',
+      };
+    case 'total_amount':
+      return {
+        key,
+        value: 'Total',
       };
     default:
       return null;
   }
 }
 
-export function localeSexToId(sex: string): "laki-laki" | "perempuan" | null {
+export function localeSexToId(sex: string): 'laki-laki' | 'perempuan' | null {
   switch (sex) {
-    case "female":
-      return "perempuan";
-    case "male":
-      return "laki-laki";
+    case 'female':
+      return 'perempuan';
+    case 'male':
+      return 'laki-laki';
 
     default:
       return null;
@@ -132,14 +127,14 @@ export function localeSexToId(sex: string): "laki-laki" | "perempuan" | null {
 
 export function localeStatusToId(
   status: TStatus
-): "Batal" | "Selesai" | "Sedang Diproses" | null {
+): 'Batal' | 'Selesai' | 'Sedang Diproses' | null {
   switch (status) {
-    case "canceled":
-      return "Batal";
-    case "progress":
-      return "Sedang Diproses";
-    case "success":
-      return "Selesai";
+    case 'canceled':
+      return 'Batal';
+    case 'progress':
+      return 'Sedang Diproses';
+    case 'success':
+      return 'Selesai';
 
     default:
       return null;

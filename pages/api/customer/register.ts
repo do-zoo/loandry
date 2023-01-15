@@ -4,10 +4,6 @@ import { CustomerModel, RFIDModel } from '@/models/index';
 import { ResponseFuncs } from '@/utils/types';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-type Data = {
-  name: string;
-};
-
 // ----------------------------------------------------------------------
 export default async function handler(
   req: NextApiRequest,
@@ -17,34 +13,25 @@ export default async function handler(
 
   const handleCase: ResponseFuncs = {
     POST: async (req: NextApiRequest, res: NextApiResponse) => {
-      const { rfid } = req.body;
-      if (!rfid) {
-        return res.status(400).send({ message: 'Gagal' });
-      }
+      const { rfid, name, sex, place_of_birth, birth_date, email, phone } =
+        req.body;
+
       try {
         dbConnect(); // connect to database
-        const availableRFID = await RFIDModel.findById(
-          '63bad69c0832798a96e47f3c'
-        );
+        const data = CustomerModel.create({
+          rfid,
+          name,
+          sex,
+          place_of_birth,
+          birth_date,
+          email,
+          phone,
+          rfid_used: 1,
+        });
 
-        availableRFID.rfid = rfid;
-        // const updatable = availableRFID[0]
-
-        // const update = await RFIDModel.updateOne({
-        //     _id: updatable
-        // },{
-        //   rfid,
-        // });
-        availableRFID.save((err: any, data: any) => {
-          if (err) {
-            return res.status(500).json({
-              message: err,
-            });
-          }
-          return res.status(200).json({
-            message: 'data updated successfully',
-            data,
-          });
+        return res.status(200).json({
+          message: 'create Customer successfully',
+          data,
         });
       } catch (err) {
         return res.status(400).send({ err });

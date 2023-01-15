@@ -18,7 +18,11 @@ export type GetRFIDNowResponse = {
 
 export const RfIdService = {
   async resetAvailableRfId(): Promise<GetRFIDNowResponse> {
-    const { data } = await service.get('/iot/customer/reset');
+    const { data } = await service.delete('/iot/customer/reset');
+    return data;
+  },
+  async getAvailableRfId(): Promise<GetRFIDNowResponse> {
+    const { data } = await service.get('/iot/customer/now');
     return data;
   },
 };

@@ -49,6 +49,8 @@ export function RFIdPreparation() {
     modalPrepare: { visibility, data },
   } = useAppSelector(state => state.modals);
 
+  // const {mutateAsync} = useMutation({})
+
   const modalType = data?.type;
 
   const idleMessage = data?.message.filter(v => v.type === 'idle')[0];
@@ -73,11 +75,8 @@ export function RFIdPreparation() {
     enabled: false,
   });
 
-  const { refetch: refetchResetRfId } = useQuery({
-    queryKey: ['RfIdReset'],
-    queryFn: RfIdService.resetAvailableRfId,
-    refetchOnWindowFocus: false,
-    enabled: false,
+  const { mutateAsync: handleDeleteRfId } = useMutation({
+    mutationFn: RfIdService.resetAvailableRfId,
   });
 
   const handleCloseModal = useCallback(() => {
@@ -89,21 +88,30 @@ export function RFIdPreparation() {
     );
     setSuccessScan(false);
     setCounter(COUNTER);
-  }, [dispatch]);
+    remove();
+  }, [dispatch, remove]);
 
-  const handleSuccess = useCallback(() => {
+  const handleSuccess = useCallback(async () => {
     handleCloseModal();
     remove();
+    // await handleDeleteRfId();
     if (modalType === 'create-customer') {
       router.push(`/customers/${fetchData?.data?.rfid}`);
     }
-  }, [handleCloseModal, modalType, router, fetchData?.data?.rfid, remove]);
+  }, [
+    handleCloseModal,
+    remove,
+    // handleDeleteRfId,
+    modalType,
+    router,
+    fetchData?.data?.rfid,
+  ]);
 
   useEffect(() => {
     if (enableToScan) {
       const interval = setInterval(() => {
         refetchAvailableToRegister();
-      }, 5000);
+      }, 1000);
       const timeOut = setTimeout(() => {
         setEnableToScan(false);
       }, 10000);
@@ -225,9 +233,12 @@ export function RFIdPreparation() {
           ) : (
             <Button
               onClick={() => {
-                setEnableToScan(true);
-                refetchAvailableToRegister();
-                // refetchResetRfId();
+                handleDeleteRfId(undefined, {
+                  onSuccess: () => {
+                    refetchAvailableToRegister();
+                    setEnableToScan(true);
+                  },
+                });
               }}
               loading={enableToScan}
             >

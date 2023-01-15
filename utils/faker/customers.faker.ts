@@ -15,7 +15,6 @@ function createRandomCustomer(): ICustomer {
   ]);
   const range = faker.helpers.arrayElement([1, 2, 3, 4, 0]);
 
-  const nisn = faker.helpers.replaceSymbols("##########");
   const createdAt = faker.date.between(
     "2020-01-01T00:00:00.000Z",
     "2030-01-01T00:00:00.000Z"
@@ -26,7 +25,6 @@ function createRandomCustomer(): ICustomer {
   return {
     _id: faker.datatype.uuid(),
     rfid: faker.helpers.replaceSymbols("******"),
-    nisn,
     name: firstName + " " + lastName,
     sex,
     place_of_birth: faker.address.cityName(),

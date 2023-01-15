@@ -12,7 +12,7 @@ export default async function handler(
   const method: keyof ResponseFuncs = req.method as keyof ResponseFuncs;
 
   const handleCase: ResponseFuncs = {
-    GET: async (req: NextApiRequest, res: NextApiResponse) => {
+    DELETE: async (req: NextApiRequest, res: NextApiResponse) => {
       try {
         dbConnect(); // connect to database
         const availableRFID = await RFIDModel.findById(

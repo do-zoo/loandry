@@ -14,6 +14,7 @@
     "@hookform/resolvers": "^2.9.10",
     "@mantine/core": "^5.10.0",
     "@mantine/dates": "^5.10.0",
+    "@mantine/form": "^5.10.0",
     "@mantine/hooks": "^5.10.0",
     "@mantine/next": "^5.10.0",
     "@mantine/nprogress": "^5.10.0",

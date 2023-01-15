@@ -1,12 +1,16 @@
 import { CustomerTable } from '@/components/Table';
 import { useAppDispatch } from '@/hooks/redux';
+import { CustomerService } from '@/services/customer.services';
 import { setModalPrepare } from '@/stores/features/modal/modal.slice';
-import { createCustomers } from '@/utils/faker';
+import { ICustomer } from '@/types/res';
 import { modalCreateCustomerMessage } from '@/variables/modal';
 import { Box, Button, Group, Stack, Title } from '@mantine/core';
 import Head from 'next/head';
 
-function Customers() {
+interface IProps {
+  data: ICustomer[];
+}
+function Customers({ data }: IProps) {
   const dispatch = useAppDispatch();
 
   const handleAddCustomer = () => {
@@ -28,11 +32,19 @@ function Customers() {
           <Button onClick={handleAddCustomer}>Pelanggan Baru</Button>
         </Group>
         <Box>
-          <CustomerTable customers={createCustomers(10)} />
+          <CustomerTable customers={data} />
         </Box>
       </Stack>
     </>
   );
+}
+
+export async function getServerSideProps() {
+  // Fetch data from external API
+  const { data } = await CustomerService.getAllCustomer();
+
+  // Pass data to the page via props
+  return { props: { data } };
 }
 
 export default Customers;
