@@ -1,26 +1,24 @@
+import { CreateCustomer } from '@/components/Modals';
 import { CustomerTable } from '@/components/Table';
-import { useAppDispatch } from '@/hooks/redux';
 import { CustomerService } from '@/services/customer.services';
-import { setModalPrepare } from '@/stores/features/modal/modal.slice';
 import { ICustomer } from '@/types/res';
 import { APP_NAME } from '@/variables/index';
-import { modalCreateCustomerMessage } from '@/variables/modal';
 import { Box, Button, Group, Stack, Title } from '@mantine/core';
 import Head from 'next/head';
+import { useState } from 'react';
 
 interface IProps {
   data: ICustomer[];
 }
 function Customers({ data }: IProps) {
-  const dispatch = useAppDispatch();
+  const [opened, setOpened] = useState(false);
+
+  const handleCloseModal = () => {
+    setOpened(false);
+  };
 
   const handleAddCustomer = () => {
-    dispatch(
-      setModalPrepare({
-        visibility: true,
-        data: modalCreateCustomerMessage,
-      })
-    );
+    setOpened(true);
   };
   return (
     <>
@@ -36,6 +34,7 @@ function Customers({ data }: IProps) {
           <CustomerTable customers={data} />
         </Box>
       </Stack>
+      <CreateCustomer onClose={handleCloseModal} opened={opened} />
     </>
   );
 }

@@ -104,6 +104,7 @@ export function HeaderMegaMenu() {
       sx={{
         position: 'sticky',
         top: 0,
+        zIndex: 199,
       }}
     >
       <Header height={60}>

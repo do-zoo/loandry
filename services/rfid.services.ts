@@ -1,3 +1,4 @@
+import { responseStatus } from '@/variables/response-status';
 import service from './_base.services';
 
 export type GetRFIDNowResponse = {
@@ -13,7 +14,7 @@ export type GetRFIDNowResponse = {
     rfid_used: number;
   };
   message: string;
-  status: number;
+  status: keyof typeof responseStatus;
 };
 
 export const RfIdService = {

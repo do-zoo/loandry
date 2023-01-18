@@ -1,2 +1,2 @@
-export { RFIdPreparation } from './RfIdPreparation.modal';
+export { CreateCustomer, CreateTransaction } from './RfId/index';
 export { ModalProduct } from './ModalProduct/ModalProduct';

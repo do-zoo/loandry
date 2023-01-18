@@ -1,3 +1,4 @@
+import { KeyOfResponseStatus } from '@/variables/response-status';
 import service from './_base.services';
 
 export type CustomerResponse = {
@@ -13,7 +14,7 @@ export type CustomerResponse = {
     rfid_used: number;
   };
   message: string;
-  status: number;
+  status: KeyOfResponseStatus;
 };
 
 type POSTCreateCustomerData = {
@@ -29,6 +30,10 @@ type POSTCreateCustomerData = {
 export const CustomerService = {
   async availableToRegister(): Promise<CustomerResponse> {
     const { data } = await service.get('/customer/register');
+    return data;
+  },
+  async getUserByRfId(): Promise<CustomerResponse> {
+    const { data } = await service.get(`/customer/rfid`);
     return data;
   },
   async createCustomer(

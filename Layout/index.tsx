@@ -1,4 +1,3 @@
-import { RFIdPreparation } from '@/components/Modals';
 import { HeaderMegaMenu } from '@/components/Navbar';
 import { Box, Container } from '@mantine/core';
 import React from 'react';
@@ -14,7 +13,6 @@ function Layout({ children }: { children: React.ReactNode }) {
         <HeaderMegaMenu />
         <Container py="md">{children}</Container>
       </Box>
-      <RFIdPreparation />
     </>
   );
 }
