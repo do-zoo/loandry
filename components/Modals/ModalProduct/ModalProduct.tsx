@@ -177,6 +177,7 @@ export function ModalProduct() {
               position="center"
               spacing="xl"
               style={{ minHeight: 220, pointerEvents: 'none' }}
+              pos="relative"
             >
               {imagePreview && previews(imagePreview)}
               <Dropzone.Accept>

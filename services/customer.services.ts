@@ -32,7 +32,7 @@ export const CustomerService = {
     const { data } = await service.get('/customer/register');
     return data;
   },
-  async getUserByRfId(): Promise<CustomerResponse> {
+  async getCustomerByRfId(): Promise<CustomerResponse> {
     const { data } = await service.get(`/customer/rfid`);
     return data;
   },

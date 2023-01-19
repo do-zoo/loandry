@@ -41,7 +41,7 @@ export function CreateTransaction({ onClose, opened }: IProps) {
     remove,
   } = useQuery({
     queryKey: ['availableToRegister'],
-    queryFn: CustomerService.getUserByRfId,
+    queryFn: CustomerService.getCustomerByRfId,
     refetchOnWindowFocus: false,
     enabled: false,
   });

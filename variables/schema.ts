@@ -89,6 +89,9 @@ minBirthDate.setFullYear(minBirthDate.getFullYear() - 65);
 const maxBirthDate = new Date();
 maxBirthDate.setFullYear(maxBirthDate.getFullYear() - 18);
 
+const minDateNow = new Date();
+minDateNow.setDate(minDateNow.getDate() - 1);
+
 // console.log(minBirthDate,)
 
 export const UserLoginSchema = yup
@@ -137,5 +140,20 @@ export const ProductSchema = yup
     price: yup.number().required().label('Harga'),
     unit: yup.string().required().label('Unit'),
     image: yup.string().ensure().label('Gambar'),
+  })
+  .required();
+
+export const CreateTransactionSchema = yup
+  .object()
+  .shape({
+    invoice: yup.string().required().ensure().label('kode Invoice'),
+    customer_id: yup.string().required().ensure().label('Pelanggan'),
+    quantity: yup.number().required().label('Berat'),
+    product_id: yup.string().required().ensure().label('product'),
+    due_date: yup
+      .date()
+      .required()
+      .min(minDateNow, 'minimal Tanggal Pengambilan adalah hari ini')
+      .label('Tanggal Pengambilan'),
   })
   .required();

@@ -1,4 +1,4 @@
-import { models, model, Schema } from "mongoose";
+import { models, model, Schema } from 'mongoose';
 
 const TransactionSchema: Schema = new Schema(
   {
@@ -50,4 +50,4 @@ const TransactionSchema: Schema = new Schema(
 );
 
 export const TransactionModel =
-  models.Transaction || model("Transaction", TransactionSchema);
+  models.Transaction || model('Transaction', TransactionSchema);

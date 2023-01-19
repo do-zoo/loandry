@@ -1,12 +1,16 @@
 import { CustomerService } from '@/services/customer.services';
+import { ProductService } from '@/services/product.services';
 import { RfIdService } from '@/services/rfid.services';
-import { citiesOfIndonesia } from '@/variables/city-of-indonesia';
+import { WeightService } from '@/services/weight.service';
+import { ICustomer, IProduct } from '@/types/res';
+import { localeSexToId } from '@/utils/index';
 import { APP_NAME } from '@/variables/index';
-import { CreateCustomerSchema } from '@/variables/schema';
+import { CreateTransactionSchema } from '@/variables/schema';
 import {
+  ActionIcon,
   Button,
   Container,
-  Radio,
+  Group,
   Select,
   SimpleGrid,
   Stack,
@@ -16,48 +20,83 @@ import {
 } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import { useForm, yupResolver } from '@mantine/form';
+import { IconRefresh } from '@tabler/icons';
 import dayjs from 'dayjs';
 import 'dayjs/locale/id';
 import type { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useMutation } from 'react-query';
+import { useEffect, useMemo } from 'react';
+import { useMutation, useQuery } from 'react-query';
 
 interface IAddCustomerProps {
   id: string;
+  customer: ICustomer;
+  products: IProduct[];
 }
 
 const CreateTransaction: NextPage<IAddCustomerProps> = props => {
-  const { id } = props;
+  const { id, customer, products } = props;
+  //   console.log(customer, products);
 
   const router = useRouter();
+
+  const productOptions = useMemo(() => {
+    return products.reduce((acc, curr) => {
+      acc.push({
+        key: curr._id,
+        value: curr._id,
+        label: curr.name,
+      });
+      return acc;
+    }, [] as Record<'key' | 'value' | 'label', string>[]);
+  }, [products]);
 
   const { mutateAsync, isLoading } = useMutation({
     mutationFn: CustomerService.createCustomer,
   });
 
-  const { mutate: handleDeleteRfId } = useMutation({
-    mutationFn: RfIdService.resetAvailableRfId,
+  const {
+    data: fetchWeight,
+    refetch,
+    isFetching,
+    status,
+  } = useQuery({
+    queryKey: 'get-weight',
+    queryFn: WeightService.getWeight,
   });
 
   const form = useForm({
     initialValues: {
-      name: '',
-      place_of_birth: '',
-      email: '',
-      phone: '',
-      birth_date: new Date(),
-      sex: '',
-      rfid: id,
+      invoice: '',
+      customer_id: customer._id,
+      quantity: 0,
+      product_id: '',
+      due_date: new Date(),
     },
-    validate: yupResolver(CreateCustomerSchema),
+    validate: yupResolver(CreateTransactionSchema),
   });
+
+  const { setValues, errors, values } = form;
+
+  const selectedProduct = useMemo(() => {
+    return products.find(v => v._id === values.product_id);
+  }, [products, values.product_id]);
+
+  useEffect(() => {
+    if (isFetching) {
+      setValues({
+        quantity: fetchWeight?.data?.weight,
+      });
+    }
+  }, [fetchWeight?.data?.weight, setValues, isFetching]);
 
   const onSubmit = form.onSubmit(values => {
     try {
-      mutateAsync(values);
-      handleDeleteRfId();
-      router.push('/customers');
+      //   mutateAsync(values);
+      //   handleDeleteRfId();
+      //   router.push('/customers');
+      console.log(values);
     } catch (error) {
       console.log(error);
     }
@@ -70,12 +109,23 @@ const CreateTransaction: NextPage<IAddCustomerProps> = props => {
       </Head>
       <Container size="xs" w={'100%'} py="lg">
         <form onSubmit={onSubmit}>
+          <input type="hidden" {...form.getInputProps('customer_id')} />
           <Stack align="stretch" spacing="xl">
             <Title order={3}>Buat Transaksi Baru</Title>
             <Stack>
               {/* need to make component */}
-              <Text>Nama: Edward</Text>
-              <Text>Nama: Edward</Text>
+              <Text>
+                Nama:{' '}
+                <Text span fw="bold">
+                  {customer.name}
+                </Text>
+              </Text>
+              <Text>
+                Jenis Kelamin:{' '}
+                <Text span fw="bold">
+                  {localeSexToId(customer.sex)}
+                </Text>
+              </Text>
             </Stack>
             <Stack>
               <SimpleGrid
@@ -83,70 +133,64 @@ const CreateTransaction: NextPage<IAddCustomerProps> = props => {
                 breakpoints={[{ maxWidth: 481, cols: 1, spacing: 'sm' }]}
               >
                 <TextInput
-                  placeholder="Masukan Nama"
-                  label="Nama Lengkap"
+                  placeholder="Masukan kode invoice"
+                  label="Kode Invoice"
                   withAsterisk
-                  {...form.getInputProps('name')}
+                  {...form.getInputProps('invoice')}
+                />
+                <Select
+                  searchable
+                  nothingFound="Produk Tidak Ditemukan"
+                  label="Pilih Produk"
+                  placeholder="Pilih produk"
+                  withAsterisk
+                  data={productOptions}
+                  {...form.getInputProps('product_id')}
                 />
               </SimpleGrid>
               <SimpleGrid
                 cols={2}
                 breakpoints={[{ maxWidth: 481, cols: 1, spacing: 'sm' }]}
               >
-                <Select
-                  searchable
-                  nothingFound="Tempat Tidak Ditemukan"
-                  label="Tempat Lahir"
-                  placeholder="Tempat Lahir"
+                <TextInput
+                  placeholder="Kuantitas"
+                  label="Kuantitas"
+                  type="number"
                   withAsterisk
-                  data={citiesOfIndonesia}
-                  {...form.getInputProps('place_of_birth')}
+                  rightSectionWidth={72}
+                  rightSection={
+                    <Group noWrap position="right" w={64} spacing="xs">
+                      {selectedProduct?.unit && (
+                        <Text transform="capitalize">
+                          {' '}
+                          /{selectedProduct?.unit}
+                        </Text>
+                      )}
+
+                      <ActionIcon
+                        variant="filled"
+                        color="blue"
+                        onClick={() => refetch()}
+                        display={
+                          selectedProduct?.unit === 'pcs' ? 'none' : 'flex'
+                        }
+                      >
+                        <IconRefresh size={18} />
+                      </ActionIcon>
+                    </Group>
+                  }
+                  {...form.getInputProps('quantity')}
                 />
                 <DatePicker
                   placeholder="Pilih Tanggal"
-                  label="Tanggal Lahir"
+                  label="Tanggal Pengambilan"
                   withAsterisk
                   locale="id"
                   inputFormat="D MMMM YYYY"
                   allowFreeInput
                   dateParser={dateString => new Date(Date.parse(dateString))}
-                  minDate={dayjs(new Date())
-                    .startOf('year')
-                    .add(-65, 'year')
-                    .toDate()}
-                  maxDate={dayjs(new Date())
-                    .endOf('year')
-                    .subtract(10, 'years')
-                    .toDate()}
-                  {...form.getInputProps('birth_date')}
-                />
-              </SimpleGrid>
-              <Radio.Group
-                //   name="favoriteFramework"
-                label="Jenis Kelamin"
-                withAsterisk
-                {...form.getInputProps('sex')}
-              >
-                <Radio value="male" label="Laki-Laki" />
-                <Radio value="female" label="Perempuan" />
-              </Radio.Group>
-              <SimpleGrid
-                cols={2}
-                breakpoints={[{ maxWidth: 481, cols: 1, spacing: 'sm' }]}
-              >
-                <TextInput
-                  placeholder="Masukan Email"
-                  label="Email"
-                  withAsterisk
-                  {...form.getInputProps('email')}
-                />
-                <TextInput
-                  placeholder="Masukan Nomor Telepon"
-                  label="Nomor Telepon"
-                  withAsterisk
-                  {...form.getInputProps('phone')}
-                  // component={InputMask}
-                  // mask={'+62 899-9999-9999'}
+                  minDate={dayjs(new Date()).startOf('date').toDate()}
+                  {...form.getInputProps('due_date')}
                 />
               </SimpleGrid>
             </Stack>
@@ -175,9 +219,14 @@ export const getServerSideProps: GetServerSideProps = async context => {
     };
   }
 
+  const { data: customer } = await CustomerService.getCustomerByRfId();
+  const { data: products } = await ProductService.getAllProduct();
+
   return {
     props: {
       id,
+      customer,
+      products,
     }, // will be passed to the page component as props
   };
 };

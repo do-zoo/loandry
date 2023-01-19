@@ -1,5 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { dbConnect } from '@/middlewares/mongodb';
+import { CustomerModel, TransactionModel } from '@/models/index';
 import { ProductModel } from '@/models/product/product.model';
 import { ResponseFuncs } from '@/utils/types';
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -13,21 +14,32 @@ export default async function handler(
 
   const handleCase: ResponseFuncs = {
     POST: async (req: NextApiRequest, res: NextApiResponse) => {
-      const { code, name, price, unit, image } = req.body;
+      const { invoice, customer_id, quantity, product_id, due_date } = req.body;
 
       try {
         dbConnect(); // connect to database
-        const data = await ProductModel.create({
-          code,
-          name,
-          price,
-          unit,
-          image,
-        });
+        const customer = await CustomerModel.findById(customer_id);
+        const product = await ProductModel.findById(product_id);
+
+        const payload = {
+          invoice,
+          customer_id,
+          customer_name: customer.name,
+          quantity,
+          product_id,
+          product_name: product.name,
+          product_price: product.price,
+          total_amount: quantity * product.price,
+          due_date,
+          status: 'idle',
+        };
+
+        const transaction = await TransactionModel.create(payload);
 
         return res.status(200).json({
           message: 'create product successfully',
-          data,
+          data: transaction,
+          status: 'success',
         });
       } catch (err) {
         return res.status(400).send({ err });
@@ -36,12 +48,12 @@ export default async function handler(
     GET: async (req: NextApiRequest, res: NextApiResponse) => {
       try {
         dbConnect(); // connect to database
-        const products = await ProductModel.find();
+        const transactions = await TransactionModel.find();
 
         return res.send({
           message: 'Berhasil',
           status: 1,
-          data: products,
+          data: transactions,
         });
       } catch (err) {
         return res

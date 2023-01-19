@@ -1,11 +1,10 @@
-import { models, model, Schema } from "mongoose";
+import { models, model, Schema } from 'mongoose';
 
 const WeightSchema: Schema = new Schema(
   {
     weight: {
-      type: String,
+      type: Number,
       required: true,
-      unique: true,
     },
   },
   {
@@ -13,4 +12,4 @@ const WeightSchema: Schema = new Schema(
   }
 );
 
-export const WeightModel = models.Weight || model("Weight", WeightSchema);
+export const WeightModel = models.Weight || model('Weight', WeightSchema);
