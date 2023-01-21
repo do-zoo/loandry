@@ -41,12 +41,12 @@ export default async function handler(
 
         return res.send({
           message: 'delete product successfully',
-          status: 1,
+          status: 'success',
         });
       } catch (err) {
         return res
           .status(400)
-          .send({ message: 'Gagal', status: 3, data: null });
+          .send({ message: 'Gagal', status: 'error', data: null });
       }
     },
     GET: async (req: NextApiRequest, res: NextApiResponse) => {
@@ -58,13 +58,13 @@ export default async function handler(
 
         return res.send({
           message: 'Berhasil',
-          status: 1,
+          status: 'success',
           data: product,
         });
       } catch (err) {
         return res
           .status(400)
-          .send({ message: 'Gagal', status: 3, data: null });
+          .send({ message: 'Gagal', status: 'error', data: null });
       }
     },
   };

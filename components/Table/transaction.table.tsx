@@ -5,7 +5,7 @@ import {
   localeStatusToId,
 } from '@/utils/index';
 import { transactionKeys } from '@/variables/index';
-import { Badge, Button, MantineColor, Menu } from '@mantine/core';
+import { Badge, Button, Center, MantineColor, Menu } from '@mantine/core';
 import { useMemo } from 'react';
 import BaseTable from './_base-table';
 import { IconEdit, IconSettings, IconTrash } from '@tabler/icons';
@@ -33,7 +33,6 @@ export function TransactionTable({ transactions }: IProps) {
         return 'green';
       case 'canceled':
         return 'red';
-
       default:
         return 'blue';
     }
@@ -66,36 +65,57 @@ export function TransactionTable({ transactions }: IProps) {
             </td>
           );
         }
+
+        // rupiah(product.price)
+
         return <td key={i}>{value}</td>;
       })}
-      <td>
-        <Menu shadow="md" width={150}>
-          <Menu.Target>
-            <Button size="xs">Aksi</Button>
-          </Menu.Target>
-          <Menu.Dropdown>
-            <Menu.Label>Aksi</Menu.Label>
-            <Menu.Item icon={<IconEdit size={14} />}>Ubah</Menu.Item>
-            <Menu.Item color="red" icon={<IconTrash size={14} />}>
-              Hapus
-            </Menu.Item>
-          </Menu.Dropdown>
-        </Menu>
-      </td>
     </tr>
   ));
 
   return (
-    <BaseTable length={8}>
+    <BaseTable length={transactions.length}>
       <thead>
         <tr>
           {tableHead.map((v, i) => (
             <th key={i}>{v.value}</th>
           ))}
-          <th></th>
         </tr>
       </thead>
-      <tbody>{rows}</tbody>
+      {transactions.length > 0 ? (
+        <tbody>{rows}</tbody>
+      ) : (
+        <tbody
+          style={{
+            position: 'relative',
+          }}
+        >
+          <Center
+            w={'100%'}
+            py="lg"
+            style={{
+              position: 'absolute',
+              height: '100%',
+              width: '100%',
+            }}
+          >
+            Belum Ada Transaksi
+          </Center>
+          <tr
+          // style={{
+          //   padding: '50px 0',
+          //   backgroundColor: 'none',
+          // }}
+          >
+            <td
+              style={{
+                padding: '50px 0',
+                backgroundColor: '#fff',
+              }}
+            ></td>
+          </tr>
+        </tbody>
+      )}
     </BaseTable>
   );
 }

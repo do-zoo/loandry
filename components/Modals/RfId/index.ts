@@ -1,2 +1,2 @@
-export { CreateCustomer } from './CreateCustomer.modal';
-export { CreateTransaction } from './CreateTransaction.modal';
+export { CreateCustomerModal } from './CreateCustomer.modal';
+export { TransactionModal } from './Transaction.modal';

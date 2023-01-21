@@ -2,17 +2,7 @@ import { responseStatus } from '@/variables/response-status';
 import service from './_base.services';
 
 export type GetRFIDNowResponse = {
-  data?: {
-    _id: string;
-    rfid: string;
-    name: string;
-    sex: string;
-    place_of_birth: string;
-    birth_date: Date;
-    email: string;
-    phone: string;
-    rfid_used: number;
-  };
+  data: { _id: string; rfid: string; __v: number; updatedAt: string };
   message: string;
   status: keyof typeof responseStatus;
 };

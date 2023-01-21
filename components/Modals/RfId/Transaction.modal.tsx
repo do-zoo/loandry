@@ -5,6 +5,7 @@ import { Box, createStyles, Modal, Stack } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
+import { Url } from 'url';
 import RfIdScannerMessage, {
   ModalButton,
   ModalIllustration,
@@ -25,9 +26,10 @@ interface IProps {
   opened: boolean;
   onClose: () => void;
   counter?: number;
+  modalType: 'create' | 'update';
 }
 
-export function CreateTransaction({ onClose, opened }: IProps) {
+export function TransactionModal({ onClose, opened, modalType }: IProps) {
   const { classes } = modalScannerStyles();
   const router = useRouter();
 
@@ -60,17 +62,21 @@ export function CreateTransaction({ onClose, opened }: IProps) {
   const handleSuccess = useCallback(async () => {
     handleCloseModal();
     remove();
-    router.push(
-      {
-        pathname: '/transactions/new',
-        query: {
-          id: fetchData?.data?.rfid,
+    if (modalType === 'create') {
+      router.push(
+        {
+          pathname: '/transactions/new',
+          query: {
+            id: fetchData?.data?.rfid,
+          },
         },
-      },
-      '/transactions/new',
-      { shallow: true }
-    );
-  }, [handleCloseModal, remove, router, fetchData?.data?.rfid]);
+        '/transactions/new',
+        { shallow: true }
+      );
+      return;
+    }
+    router.push(`/transactions/${fetchData?.data?.rfid}/progress`);
+  }, [handleCloseModal, remove, modalType, router, fetchData?.data?.rfid]);
 
   useEffect(() => {
     if (status === 'loading') {

@@ -1,6 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { dbConnect } from '@/middlewares/mongodb';
-import { CustomerModel, RFIDModel } from '@/models/index';
+import { CustomerModel, TransactionModel } from '@/models/index';
+import { ProductModel } from '@/models/product/product.model';
 import { ResponseFuncs } from '@/utils/types';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
@@ -12,46 +13,37 @@ export default async function handler(
   const method: keyof ResponseFuncs = req.method as keyof ResponseFuncs;
 
   const handleCase: ResponseFuncs = {
-    // POST: async (req: NextApiRequest, res: NextApiResponse) => {
-    //   const { rfid, name, sex, place_of_birth, birth_date, email, phone } =
-    //     req.body;
-
-    //   try {
-    //     dbConnect(); // connect to database
-    //     const data = CustomerModel.create({
-    //       rfid,
-    //       name,
-    //       sex,
-    //       place_of_birth,
-    //       birth_date,
-    //       email,
-    //       phone,
-    //       rfid_used: 1,
-    //     });
-
-    //     return res.status(200).json({
-    //       message: 'create Customer successfully',
-    //       data,
-    //     });
-    //   } catch (err) {
-    //     return res.status(400).send({ err });
-    //   }
-    // },
     GET: async (req: NextApiRequest, res: NextApiResponse) => {
+      const { rfid, status } = req.query;
+
       try {
         dbConnect(); // connect to database
+        const Customer = await CustomerModel.findOne({
+          rfid,
+        });
 
-        const Customers = await CustomerModel.find();
+        const Transactions = await TransactionModel.find(
+          status
+            ? { customer_id: Customer._id, status }
+            : { customer_id: Customer._id }
+        );
+        // const Transactions = await TransactionModel.find();
+
+        const Product = await ProductModel.find();
 
         return res.send({
           message: 'Berhasil',
-          status: 1,
-          data: Customers,
+          status: 'success',
+          data: {
+            customer: Customer,
+            transactions: Transactions,
+            products: Product,
+          },
         });
       } catch (err) {
         return res
           .status(400)
-          .send({ message: 'Gagal', status: 3, data: null });
+          .send({ message: 'Gagal', status: 'error', data: null });
       }
     },
   };

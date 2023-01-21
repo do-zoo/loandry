@@ -1,6 +1,7 @@
 import { CustomerService } from '@/services/customer.services';
 import { ProductService } from '@/services/product.services';
 import { RfIdService } from '@/services/rfid.services';
+import { TransactionsService } from '@/services/transaction.services';
 import { WeightService } from '@/services/weight.service';
 import { ICustomer, IProduct } from '@/types/res';
 import { localeSexToId } from '@/utils/index';
@@ -53,7 +54,7 @@ const CreateTransaction: NextPage<IAddCustomerProps> = props => {
   }, [products]);
 
   const { mutateAsync, isLoading } = useMutation({
-    mutationFn: CustomerService.createCustomer,
+    mutationFn: TransactionsService.createTransaction,
   });
 
   const {
@@ -93,10 +94,10 @@ const CreateTransaction: NextPage<IAddCustomerProps> = props => {
 
   const onSubmit = form.onSubmit(values => {
     try {
-      //   mutateAsync(values);
-      //   handleDeleteRfId();
-      //   router.push('/customers');
-      console.log(values);
+      mutateAsync(values);
+      // handleDeleteRfId();
+      router.push('/transactions');
+      // console.log(values);
     } catch (error) {
       console.log(error);
     }

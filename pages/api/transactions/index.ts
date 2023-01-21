@@ -31,7 +31,7 @@ export default async function handler(
           product_price: product.price,
           total_amount: quantity * product.price,
           due_date,
-          status: 'idle',
+          status: 'progress',
         };
 
         const transaction = await TransactionModel.create(payload);

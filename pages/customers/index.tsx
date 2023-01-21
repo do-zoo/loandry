@@ -1,4 +1,4 @@
-import { CreateCustomer } from '@/components/Modals';
+import { CreateCustomerModal } from '@/components/Modals';
 import { CustomerTable } from '@/components/Table';
 import { CustomerService } from '@/services/customer.services';
 import { ICustomer } from '@/types/res';
@@ -34,7 +34,7 @@ function Customers({ data }: IProps) {
           <CustomerTable customers={data} />
         </Box>
       </Stack>
-      <CreateCustomer onClose={handleCloseModal} opened={opened} />
+      <CreateCustomerModal onClose={handleCloseModal} opened={opened} />
     </>
   );
 }

@@ -27,7 +27,7 @@ interface IProps {
   counter?: number;
 }
 
-export function CreateCustomer({ onClose, opened }: IProps) {
+export function CreateCustomerModal({ onClose, opened }: IProps) {
   const { classes } = modalScannerStyles();
   const router = useRouter();
 

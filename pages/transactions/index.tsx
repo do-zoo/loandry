@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CreateTransaction } from '@/components/Modals';
+import { TransactionModal } from '@/components/Modals';
 import { APP_NAME } from '@/variables/index';
 import { Box, Button, Group, Stack, Title } from '@mantine/core';
 import Head from 'next/head';
@@ -15,6 +15,7 @@ interface IProps {
 function Transactions({ data }: IProps) {
   const [opened, setOpened] = useState(false);
   const router = useRouter();
+  const [modalType, setModalType] = useState<'create' | 'update'>('create');
 
   const handleCloseModal = () => {
     setOpened(false);
@@ -22,6 +23,11 @@ function Transactions({ data }: IProps) {
 
   const handleAddTransaction = () => {
     setOpened(true);
+    setModalType('create');
+  };
+  const handleUpdateTransaction = () => {
+    setOpened(true);
+    setModalType('update');
   };
   return (
     <>
@@ -32,7 +38,9 @@ function Transactions({ data }: IProps) {
         <Group position="apart">
           <Title order={3}>Daftar Transaksi</Title>
           <Group>
-            <Button color="green">Selesaikan Transaksi</Button>
+            <Button color="green" onClick={handleUpdateTransaction}>
+              Selesaikan Transaksi
+            </Button>
             <Button onClick={handleAddTransaction}>Transaksi Baru</Button>
           </Group>
         </Group>
@@ -40,23 +48,11 @@ function Transactions({ data }: IProps) {
           <TransactionTable transactions={data} />
         </Box>
       </Stack>
-      <CreateTransaction opened={opened} onClose={handleCloseModal} />
-      <Button
-        onClick={() => {
-          router.push(
-            {
-              pathname: '/transactions/new',
-              query: {
-                id: 'E98EDAC9',
-              },
-            },
-            '/transactions/new',
-            { shallow: true }
-          );
-        }}
-      >
-        klik
-      </Button>
+      <TransactionModal
+        opened={opened}
+        onClose={handleCloseModal}
+        modalType={modalType}
+      />
     </>
   );
 }

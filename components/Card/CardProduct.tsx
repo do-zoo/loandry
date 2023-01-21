@@ -29,12 +29,12 @@ export function CardProduct({ product, onDelete, onUpdate }: IProps) {
           mx="auto"
         >
           {Boolean(product.image) ? (
-            <Image src={product.image} fill alt="Norway" />
+            <Image src={product.image} fill alt="img-product" />
           ) : (
             <Image
               src="/assets/png/placeholder-product.png"
               fill
-              alt="Norway"
+              alt="alt img-product"
             />
           )}
         </AspectRatio>
