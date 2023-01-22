@@ -98,15 +98,14 @@ const CreateTransaction: NextPage<IAddCustomerProps> = props => {
       invoice: `#${values.invoice}`,
     };
 
-    console.log(payload);
-    // try {
-    //   mutateAsync(values);
-    //   // handleDeleteRfId();
-    //   router.push('/transactions');
-    //   // console.log(values);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    try {
+      mutateAsync(payload);
+      // handleDeleteRfId();
+      router.push('/transactions');
+      // console.log(values);
+    } catch (error) {
+      console.log(error);
+    }
   });
 
   return (

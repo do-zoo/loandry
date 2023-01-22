@@ -85,7 +85,7 @@ function Progress(props: IProps) {
               <Card shadow="md" withBorder radius="md">
                 <Card.Section px="md" py="xs" withBorder>
                   <Group position="apart">
-                    <Text>#{v.invoice}</Text>
+                    <Text>{v.invoice}</Text>
                     <Text>
                       {new Date(v.due_date).toLocaleString('id-ID', {
                         dateStyle: 'long',

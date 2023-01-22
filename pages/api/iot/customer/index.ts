@@ -14,7 +14,6 @@ export default async function handler(
   const handleCase: ResponseFuncs = {
     POST: async (req: NextApiRequest, res: NextApiResponse) => {
       const { rfid, rfid_used } = req.body;
-      console.log(rfid, rfid_used);
       if (!rfid || (!rfid_used && rfid_used !== 0)) {
         return res.status(400).send({ message: 'Gagal' });
       }
