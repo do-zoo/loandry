@@ -31,13 +31,12 @@ import { useEffect, useMemo } from 'react';
 import { useMutation, useQuery } from 'react-query';
 
 interface IAddCustomerProps {
-  id: string;
   customer: ICustomer;
   products: IProduct[];
 }
 
 const CreateTransaction: NextPage<IAddCustomerProps> = props => {
-  const { id, customer, products } = props;
+  const { customer, products } = props;
   //   console.log(customer, products);
 
   const router = useRouter();
@@ -61,7 +60,7 @@ const CreateTransaction: NextPage<IAddCustomerProps> = props => {
     data: fetchWeight,
     refetch,
     isFetching,
-    status,
+    // status,
   } = useQuery({
     queryKey: 'get-weight',
     queryFn: WeightService.getWeight,
@@ -86,21 +85,28 @@ const CreateTransaction: NextPage<IAddCustomerProps> = props => {
 
   useEffect(() => {
     if (isFetching) {
+      const weight = Number(fetchWeight?.data?.weight) / 1000;
       setValues({
-        quantity: fetchWeight?.data?.weight,
+        quantity: weight ?? 0,
       });
     }
   }, [fetchWeight?.data?.weight, setValues, isFetching]);
 
   const onSubmit = form.onSubmit(values => {
-    try {
-      mutateAsync(values);
-      // handleDeleteRfId();
-      router.push('/transactions');
-      // console.log(values);
-    } catch (error) {
-      console.log(error);
-    }
+    const payload = {
+      ...values,
+      invoice: `#${values.invoice}`,
+    };
+
+    console.log(payload);
+    // try {
+    //   mutateAsync(values);
+    //   // handleDeleteRfId();
+    //   router.push('/transactions');
+    //   // console.log(values);
+    // } catch (error) {
+    //   console.log(error);
+    // }
   });
 
   return (
@@ -225,7 +231,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   return {
     props: {
-      id,
+      // id,
       customer,
       products,
     }, // will be passed to the page component as props

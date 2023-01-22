@@ -1,12 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { dbConnect } from "@/middlewares/mongodb";
-import { CustomerModel } from "@/models/index";
-import { ResponseFuncs } from "@/utils/types";
-import type { NextApiRequest, NextApiResponse } from "next";
-
-type Data = {
-  name: string;
-};
+import { dbConnect } from '@/middlewares/mongodb';
+import { CustomerModel } from '@/models/index';
+import { ResponseFuncs } from '@/utils/types';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 // ----------------------------------------------------------------------
 export default async function handler(
@@ -20,7 +16,7 @@ export default async function handler(
       const { rfid, rfid_used } = req.body;
       console.log(rfid, rfid_used);
       if (!rfid || (!rfid_used && rfid_used !== 0)) {
-        return res.status(400).send({ message: "Gagal" });
+        return res.status(400).send({ message: 'Gagal' });
       }
       try {
         dbConnect(); // connect to database
@@ -29,7 +25,7 @@ export default async function handler(
           rfid_used,
         });
         return res.status(201).json({
-          message: "Client created successfully",
+          message: 'Client created successfully',
           data: customers,
         });
       } catch (err) {
@@ -49,10 +45,10 @@ export default async function handler(
         });
 
         if (!customers) {
-          return res.status(400).send({ message: "Gagal" });
+          return res.status(400).send({ message: 'Gagal' });
         }
 
-        return res.send({ message: "Berhasil", data: customers });
+        return res.send({ message: 'Berhasil', data: customers });
       } catch (err) {
         return res.status(400).send({ err });
       }
@@ -61,5 +57,5 @@ export default async function handler(
 
   const response = handleCase[method];
   if (response) response(req, res);
-  else res.status(400).json({ error: "No Response for This Request" });
+  else res.status(400).json({ error: 'No Response for This Request' });
 }

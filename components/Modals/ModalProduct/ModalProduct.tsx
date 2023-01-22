@@ -148,7 +148,6 @@ export function ModalProduct() {
             label="Unit"
             data={[
               { value: 'kg', label: 'Kg' },
-              { value: 'gram', label: 'Gram' },
               { value: 'pcs', label: 'Pcs' },
             ]}
             withAsterisk
