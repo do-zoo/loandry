@@ -1,7 +1,7 @@
 import { RfIdScanner } from '@/components/RfIdScanner';
 import { KeyOfResponseStatus } from '@/variables/response-status';
 import { Button, createStyles, Text, Title } from '@mantine/core';
-import { IconCircleCheck, IconFaceIdError } from '@tabler/icons';
+import { IconCircleCheck, IconFaceIdError } from '@tabler/icons-react';
 
 interface ModalTitleProps {
   status: KeyOfResponseStatus;

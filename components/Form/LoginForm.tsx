@@ -7,22 +7,22 @@ import {
   Text,
   TextInput,
   Title,
-} from "@mantine/core";
-import React from "react";
-import { useStyles } from "./LoginForm.styles";
-import { Logo } from "../../assets";
-import { IconEye, IconKey, IconMail } from "@tabler/icons";
-import { useLogin } from "../../hooks";
-import { FormProvider, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { UserLoginSchema } from "../../variables/schema";
-import { useSession } from "next-auth/react";
+} from '@mantine/core';
+import React from 'react';
+import { useStyles } from './LoginForm.styles';
+import { Logo } from '../../assets';
+import { IconEye, IconKey, IconMail } from '@tabler/icons-react';
+import { useLogin } from '../../hooks';
+import { FormProvider, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { UserLoginSchema } from '../../variables/schema';
+import { useSession } from 'next-auth/react';
 
 export function LoginForm() {
   const { data: session } = useSession();
   const { classes } = useStyles();
   const formMethods = useForm({
-    defaultValues: { email: "", password: "" },
+    defaultValues: { email: '', password: '' },
     resolver: yupResolver(UserLoginSchema),
   });
 
@@ -37,7 +37,7 @@ export function LoginForm() {
   const errorMail = errors.email?.message;
   const errorPassword = errors.password?.message;
 
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = handleSubmit(data => {
     login(data);
   });
 
@@ -57,18 +57,18 @@ export function LoginForm() {
                 type="email"
                 className={classes.input}
                 icon={<IconMail size={14} />}
-                {...register("email")}
+                {...register('email')}
                 error={errorMail}
               />
               <PasswordInput
                 placeholder="Masukan password"
                 className={classes.input}
                 icon={<IconKey size={14} />}
-                {...register("password")}
+                {...register('password')}
                 error={errorPassword}
               />
               <Button fullWidth loading={isLoading} type="submit">
-                {isLoading ? "Tunggu Sebentar" : "Masuk"}
+                {isLoading ? 'Tunggu Sebentar' : 'Masuk'}
               </Button>
             </Stack>
           </form>

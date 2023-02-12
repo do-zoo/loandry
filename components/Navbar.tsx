@@ -12,7 +12,7 @@ import {
   createStyles,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconLogout } from '@tabler/icons';
+import { IconLogout } from '@tabler/icons-react';
 import { signOut } from 'next-auth/react';
 import { Logo } from '../assets';
 import Link from 'next/link';

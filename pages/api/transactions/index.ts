@@ -29,6 +29,7 @@ export default async function handler(
           product_id,
           product_name: product.name,
           product_price: product.price,
+          product_unit: product.unit,
           total_amount: quantity * product.price,
           due_date,
           status: 'progress',

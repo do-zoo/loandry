@@ -9,7 +9,7 @@ import {
   Stack,
   Text,
 } from '@mantine/core';
-import { IconDotsVertical, IconEdit, IconTrash } from '@tabler/icons';
+import { IconDotsVertical, IconEdit, IconTrash } from '@tabler/icons-react';
 import Image from 'next/image';
 
 interface IProps {

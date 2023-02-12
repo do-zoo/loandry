@@ -17,7 +17,7 @@ import {
 } from '@mantine/core';
 import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { useForm, yupResolver } from '@mantine/form';
-import { IconPhoto, IconUpload, IconX } from '@tabler/icons';
+import { IconPhoto, IconUpload, IconX } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';

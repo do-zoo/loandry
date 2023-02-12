@@ -1,14 +1,14 @@
 import { ITransaction, TStatus } from '@/types/res';
+import { rupiah } from '@/utils/format';
 import {
-  ITransactionLabel,
   generateTransactionLabel,
+  ITransactionLabel,
   localeStatusToId,
 } from '@/utils/index';
 import { transactionKeys } from '@/variables/index';
-import { Badge, Button, Center, MantineColor, Menu } from '@mantine/core';
+import { Badge, Center, MantineColor } from '@mantine/core';
 import { useMemo } from 'react';
 import BaseTable from './_base-table';
-import { IconEdit, IconSettings, IconTrash } from '@tabler/icons';
 
 interface IProps {
   transactions: ITransaction[];
@@ -42,12 +42,26 @@ export function TransactionTable({ transactions }: IProps) {
     <tr key={transaction._id}>
       {tableHead.map((v, i) => {
         const value = transaction[v.key];
-        if (typeof value === 'string' && Date.parse(value)) {
+        if (
+          (v.key === 'createdAt' || v.key === 'due_date') &&
+          Date.parse(transaction[v.key])
+        ) {
           return (
             <td key={i}>
-              {new Date(value).toLocaleString('id-ID', {
+              {new Date(transaction[v.key]).toLocaleString('id-ID', {
                 dateStyle: 'long',
               })}
+            </td>
+          );
+        }
+        if (v.key === 'product_price' || v.key === 'total_amount') {
+          return <td key={i}>{rupiah(transaction[v.key])}</td>;
+        }
+
+        if (v.key === 'quantity') {
+          return (
+            <td key={i}>
+              {transaction[v.key]} {transaction['product_unit']}
             </td>
           );
         }
@@ -68,7 +82,7 @@ export function TransactionTable({ transactions }: IProps) {
 
         // rupiah(product.price)
 
-        return <td key={i}>{value}</td>;
+        return <td key={i}>{transaction[v.key]}</td>;
       })}
     </tr>
   ));
@@ -101,12 +115,7 @@ export function TransactionTable({ transactions }: IProps) {
           >
             Belum Ada Transaksi
           </Center>
-          <tr
-          // style={{
-          //   padding: '50px 0',
-          //   backgroundColor: 'none',
-          // }}
-          >
+          <tr>
             <td
               style={{
                 padding: '50px 0',

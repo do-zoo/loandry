@@ -35,6 +35,10 @@ const TransactionSchema: Schema = new Schema(
       type: Number,
       required: true,
     },
+    product_unit: {
+      type: String,
+      required: true,
+    },
     total_amount: {
       type: Number,
       required: true,

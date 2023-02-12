@@ -21,7 +21,7 @@ import {
 } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import { useForm, yupResolver } from '@mantine/form';
-import { IconRefresh } from '@tabler/icons';
+import { IconRefresh } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/id';
 import type { GetServerSideProps, NextPage } from 'next';

@@ -35,6 +35,7 @@ export interface ITransaction {
   product_id: string;
   product_name: string;
   product_price: number;
+  product_unit: string;
   total_amount: number;
   due_date: string;
   createdAt: string;
