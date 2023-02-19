@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { dbConnect } from '@/middlewares/mongodb';
-import { CustomerModel, TransactionModel } from '@/models/index';
+import { TransactionModel } from '@/models/index';
 import { ResponseFuncs } from '@/utils/types';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
@@ -23,31 +23,6 @@ export default async function handler(
         await TransactionModel.findOneAndUpdate(filter, update);
 
         const transaction = await TransactionModel.findOne(filter);
-        const customer = await CustomerModel.findById(transaction?.customer_id);
-
-        const payloadMail = {
-          service_id: 'service_bfsglpb',
-          template_id: 'template_vtiep6j',
-          user_id: 'L-G677Y0EVo1bSBSz',
-          template_params: {
-            email: customer.email,
-            to_name: customer.name,
-            rfid: customer.rfid,
-            invoice: transaction.invoice,
-            product_name: transaction.product_name,
-            total_amount: transaction.total_amount,
-          },
-        };
-
-        await fetch('https://api.emailjs.com/api/v1.0/email/send', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payloadMail),
-        }).then(() => console.log('Your mail is sent!'));
-
-        // console.log();
 
         return res.send({
           message: 'Berhasil',

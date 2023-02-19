@@ -41,6 +41,32 @@ const getTransactionProduct = ({
   return products.find(product => product._id === transaction.product_id);
 };
 
+interface SendMailPayload {
+  service_id: string;
+  template_id: string;
+  user_id: string;
+  template_params: TemplateParams;
+}
+
+interface TemplateParams {
+  email: string;
+  to_name: string;
+  rfid: string;
+  invoice: string;
+  product_name: string;
+  total_amount: number;
+}
+
+const sendMail = async (payload: SendMailPayload) => {
+  await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  }).then(() => console.log('Your mail is sent!'));
+};
+
 function Progress(props: IProps) {
   const { customer, transactions, products } = props;
   const [isModalSuccessOpen, setIsModalSuccessOpen] = useState(false);
@@ -54,9 +80,30 @@ function Progress(props: IProps) {
   const handleUpdateStatus = ({
     id,
     status,
-  }: Record<'id' | 'status', string>) => {
+    transaction,
+  }: {
+    id: string;
+    status: string;
+    transaction: ITransaction;
+  }) => {
     try {
       mutateAsync({ id, status });
+      const payloadMail = {
+        service_id: 'service_bfsglpb',
+        template_id: 'template_vtiep6j',
+        user_id: 'L-G677Y0EVo1bSBSz',
+        template_params: {
+          email: customer.email,
+          to_name: customer.name,
+          rfid: customer.rfid,
+          invoice: transaction.invoice,
+          product_name: transaction.product_name,
+          total_amount: transaction.total_amount,
+        },
+      };
+
+      sendMail(payloadMail);
+
       router.replace(router.asPath);
     } catch (error) {
       console.log(error);
@@ -152,6 +199,7 @@ function Progress(props: IProps) {
                               handleUpdateStatus({
                                 id: v._id,
                                 status: 'success',
+                                transaction: v,
                               })
                             }
                             // loading={isLoading}
