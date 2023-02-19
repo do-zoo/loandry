@@ -20,7 +20,7 @@ export default async function handler(
       try {
         dbConnect(); // connect to database
 
-        await TransactionModel.findOneAndUpdate(filter, update);
+        TransactionModel.findOneAndUpdate(filter, update);
 
         const transaction = await TransactionModel.findOne(filter);
 

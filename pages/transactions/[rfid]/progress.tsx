@@ -89,9 +89,9 @@ function Progress(props: IProps) {
     try {
       mutateAsync({ id, status });
       const payloadMail = {
-        service_id: 'service_bfsglpb',
-        template_id: 'template_vtiep6j',
-        user_id: 'L-G677Y0EVo1bSBSz',
+        service_id: process.env.NEXT_PUBLIC_EMAIL_SERVICE_ID ?? '',
+        template_id: process.env.NEXT_PUBLIC_EMAIL_TEMPLATE_ID ?? '',
+        user_id: process.env.NEXT_PUBLIC_EMAIL_PUBLIC_KEY ?? '',
         template_params: {
           email: customer.email,
           to_name: customer.name,
