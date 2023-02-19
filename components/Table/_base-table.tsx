@@ -1,12 +1,14 @@
 import { Center, Pagination, ScrollArea, Stack, Table } from '@mantine/core';
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 function BaseTable({
   children,
   length,
+  onPageChange,
 }: {
   children: ReactNode;
   length: number;
+  onPageChange: (e: number) => void;
 }) {
   return (
     <Stack>
@@ -23,7 +25,10 @@ function BaseTable({
       </ScrollArea>
       {length > 0 && (
         <Center>
-          <Pagination total={Math.ceil(length / 10)} />
+          <Pagination
+            total={Math.ceil(length / 10)}
+            onChange={e => onPageChange(e)}
+          />
         </Center>
       )}
     </Stack>

@@ -7,7 +7,7 @@ import {
 } from '@/utils/index';
 import { transactionKeys } from '@/variables/index';
 import { Badge, Center, MantineColor } from '@mantine/core';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import BaseTable from './_base-table';
 
 interface IProps {
@@ -15,6 +15,8 @@ interface IProps {
 }
 
 export function TransactionTable({ transactions }: IProps) {
+  const [page, setPage] = useState(1);
+
   const tableHead = useMemo(() => {
     return transactionKeys.reduce((acc, cur) => {
       const value = generateTransactionLabel(cur);
@@ -37,8 +39,15 @@ export function TransactionTable({ transactions }: IProps) {
         return 'blue';
     }
   }
+  const tableBody = useMemo(() => {
+    if (page === 1) {
+      return transactions;
+    } else {
+      return transactions.slice(Math.floor((page - 1) * 9));
+    }
+  }, [transactions, page]);
 
-  const rows = transactions.map(transaction => (
+  const rows = tableBody.map(transaction => (
     <tr key={transaction._id}>
       {tableHead.map((v, i) => {
         const value = transaction[v.key];
@@ -87,8 +96,12 @@ export function TransactionTable({ transactions }: IProps) {
     </tr>
   ));
 
+  const onPageChange = (e: number) => {
+    setPage(e);
+  };
+
   return (
-    <BaseTable length={transactions.length}>
+    <BaseTable length={transactions.length} onPageChange={onPageChange}>
       <thead>
         <tr>
           {tableHead.map((v, i) => (

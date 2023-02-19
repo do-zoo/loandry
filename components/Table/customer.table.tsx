@@ -6,7 +6,7 @@ import {
 } from '@/utils/index';
 import { customerKeys } from '@/variables/index';
 import { Box, Center, Text } from '@mantine/core';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import BaseTable from './_base-table';
 
 interface IProps {
@@ -14,6 +14,8 @@ interface IProps {
 }
 
 export function CustomerTable({ customers }: IProps) {
+  const [page, setPage] = useState(1);
+
   const tableHead = useMemo(() => {
     return customerKeys.reduce((acc, cur) => {
       const value = generateCustomerLabel(cur);
@@ -24,10 +26,18 @@ export function CustomerTable({ customers }: IProps) {
     }, [] as ICustomerLabel[]);
   }, []);
 
+  const tableBody = useMemo(() => {
+    if (page === 1) {
+      return customers;
+    } else {
+      return customers.slice(Math.floor((page - 1) * 9));
+    }
+  }, [customers, page]);
+
   const renderBody =
     customers.length > 0 ? (
       <tbody>
-        {customers.map((customer, i) => (
+        {tableBody.map((customer, i) => (
           <tr key={customer._id}>
             {tableHead.map((v, i) => {
               const value = customer[v.key];
@@ -85,8 +95,12 @@ export function CustomerTable({ customers }: IProps) {
       </tbody>
     );
 
+  const onPageChange = (e: number) => {
+    setPage(e);
+  };
+
   return (
-    <BaseTable length={customers.length}>
+    <BaseTable length={customers.length} onPageChange={onPageChange}>
       <thead>
         <tr>
           {tableHead.map((v, i) => (
