@@ -26,14 +26,13 @@ export function CustomerTable({ customers }: IProps) {
     }, [] as ICustomerLabel[]);
   }, []);
 
-  const tableBody = useMemo(() => {
-    if (page === 1) {
-      return customers;
-    } else {
-      return customers.slice(Math.floor((page - 1) * 9));
-    }
-  }, [customers, page]);
-
+  const tableBody = useMemo(
+    () =>
+      customers.filter(
+        (_, i) => i >= Math.floor((page - 1) * 9) && i <= Math.floor(9 * page)
+      ),
+    [customers, page]
+  );
   const renderBody =
     customers.length > 0 ? (
       <tbody>

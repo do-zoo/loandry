@@ -39,13 +39,13 @@ export function TransactionTable({ transactions }: IProps) {
         return 'blue';
     }
   }
-  const tableBody = useMemo(() => {
-    if (page === 1) {
-      return transactions;
-    } else {
-      return transactions.slice(Math.floor((page - 1) * 9));
-    }
-  }, [transactions, page]);
+  const tableBody = useMemo(
+    () =>
+      transactions.filter(
+        (_, i) => i >= Math.floor((page - 1) * 9) && i <= Math.floor(9 * page)
+      ),
+    [transactions, page]
+  );
 
   const rows = tableBody.map(transaction => (
     <tr key={transaction._id}>
