@@ -1,7 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { dbConnect } from '@/middlewares/mongodb';
-import { CustomerModel, RFIDModel, TransactionModel } from '@/models/index';
-import { ProductModel } from '@/models/product/product.model';
+import { CustomerModel, TransactionModel } from '@/models/index';
 import { ResponseFuncs } from '@/utils/types';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
@@ -46,7 +45,9 @@ export default async function handler(
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(payloadMail),
-        });
+        }).then(() => console.log('Your mail is sent!'));
+
+        // console.log();
 
         return res.send({
           message: 'Berhasil',
