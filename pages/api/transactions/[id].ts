@@ -13,60 +13,6 @@ export default async function handler(
   const method: keyof ResponseFuncs = req.method as keyof ResponseFuncs;
 
   const handleCase: ResponseFuncs = {
-    // PUT: async (req: NextApiRequest, res: NextApiResponse) => {
-    //   const { id } = req.query;
-    //   const { code, name, price, unit, image } = req.body;
-    //   const filter = { _id: id };
-    //   const update = { code, name, price, unit, image };
-
-    //   try {
-    //     dbConnect(); // connect to database
-    //     await ProductModel.findOneAndUpdate(filter, update);
-    //     const data = await ProductModel.findOne(filter);
-
-    //     return res.status(200).json({
-    //       message: 'update product successfully',
-    //       data,
-    //     });
-    //   } catch (err) {
-    //     return res.status(400).send({ err });
-    //   }
-    // },
-    // DELETE: async (req: NextApiRequest, res: NextApiResponse) => {
-    //   const { id } = req.query;
-    //   const filter = { _id: id };
-    //   try {
-    //     dbConnect(); // connect to database
-    //     await ProductModel.findOneAndDelete(filter);
-
-    //     return res.send({
-    //       message: 'delete product successfully',
-    //       status: 1,
-    //     });
-    //   } catch (err) {
-    //     return res
-    //       .status(400)
-    //       .send({ message: 'Gagal', status: 3, data: null });
-    //   }
-    // },
-    // GET: async (req: NextApiRequest, res: NextApiResponse) => {
-    //   const { id } = req.query;
-    //   const filter = { _id: id };
-    //   try {
-    //     dbConnect(); // connect to database
-    //     const product = await ProductModel.findOne(filter);
-
-    //     return res.send({
-    //       message: 'Berhasil',
-    //       status: 1,
-    //       data: product,
-    //     });
-    //   } catch (err) {
-    //     return res
-    //       .status(400)
-    //       .send({ message: 'Gagal', status: 3, data: null });
-    //   }
-    // },
     PATCH: async (req: NextApiRequest, res: NextApiResponse) => {
       const { id } = req.query;
       const { status } = req.body;
@@ -77,12 +23,35 @@ export default async function handler(
 
         await TransactionModel.findOneAndUpdate(filter, update);
 
-        const product = await TransactionModel.findOne(filter);
+        const transaction = await TransactionModel.findOne(filter);
+        const customer = await CustomerModel.findById(transaction?.customer_id);
+
+        const payloadMail = {
+          service_id: 'service_bfsglpb',
+          template_id: 'template_vtiep6j',
+          user_id: 'L-G677Y0EVo1bSBSz',
+          template_params: {
+            email: customer.email,
+            to_name: customer.name,
+            rfid: customer.rfid,
+            invoice: transaction.invoice,
+            product_name: transaction.product_name,
+            total_amount: transaction.total_amount,
+          },
+        };
+
+        await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payloadMail),
+        });
 
         return res.send({
           message: 'Berhasil',
           status: 'success',
-          data: product,
+          data: transaction,
         });
       } catch (err) {
         return res
