@@ -1,17 +1,34 @@
 import { CreateCustomerModal } from '@/components/Modals';
 import { CustomerTable } from '@/components/Table';
 import { CustomerService } from '@/services/customer.services';
-import { ICustomer } from '@/types/res';
 import { APP_NAME } from '@/variables/index';
-import { Box, Button, Group, Stack, Title } from '@mantine/core';
+import {
+  Box,
+  Button,
+  Group,
+  LoadingOverlay,
+  Stack,
+  Title,
+} from '@mantine/core';
 import Head from 'next/head';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { useQuery } from 'react-query';
 
-interface IProps {
-  data: ICustomer[];
-}
-function Customers({ data }: IProps) {
+function Customers() {
   const [opened, setOpened] = useState(false);
+
+  const { data: customersApi, isFetching } = useQuery({
+    queryKey: ['customers'],
+    queryFn: CustomerService.getAllCustomer,
+  });
+
+  const customers = useMemo(
+    () =>
+      customersApi?.data && Array.isArray(customersApi.data)
+        ? customersApi.data
+        : [],
+    [customersApi?.data]
+  );
 
   const handleCloseModal = () => {
     setOpened(false);
@@ -31,20 +48,13 @@ function Customers({ data }: IProps) {
           <Button onClick={handleAddCustomer}>Pelanggan Baru</Button>
         </Group>
         <Box>
-          <CustomerTable customers={data} />
+          <CustomerTable customers={customers} />
         </Box>
       </Stack>
       <CreateCustomerModal onClose={handleCloseModal} opened={opened} />
+      <LoadingOverlay visible={isFetching} overlayBlur={10} mih="100vh" />
     </>
   );
-}
-
-export async function getServerSideProps() {
-  // Fetch data from external API
-  const { data } = await CustomerService.getAllCustomer();
-
-  // Pass data to the page via props
-  return { props: { data } };
 }
 
 export default Customers;

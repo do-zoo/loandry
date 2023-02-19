@@ -36,7 +36,9 @@ export default async function handler(
     GET: async (req: NextApiRequest, res: NextApiResponse) => {
       try {
         dbConnect(); // connect to database
-        const products = await ProductModel.find();
+        const products = await ProductModel.find().sort({
+          createdAt: -1,
+        });
 
         return res.send({
           message: 'Berhasil',

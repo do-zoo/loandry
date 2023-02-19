@@ -21,20 +21,27 @@ import { IconPhoto, IconUpload, IconX } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 
 export function ModalProduct() {
   const [errorImage, setErrorImage] = useState<string>('');
+  const queryClient = useQueryClient();
   const { visibility: isOpen, data } = useAppSelector(
     state => state.modals.modalProduct
   );
 
   const { mutateAsync, isLoading } = useMutation({
     mutationFn: ProductService.createProduct,
+    onSuccess() {
+      queryClient.invalidateQueries(['products']);
+    },
   });
 
   const { mutateAsync: updateAsync, isLoading: updateLoad } = useMutation({
     mutationFn: ProductService.updateProduct,
+    onSuccess() {
+      queryClient.invalidateQueries(['products']);
+    },
   });
 
   const router = useRouter();

@@ -12,36 +12,13 @@ export default async function handler(
   const method: keyof ResponseFuncs = req.method as keyof ResponseFuncs;
 
   const handleCase: ResponseFuncs = {
-    // POST: async (req: NextApiRequest, res: NextApiResponse) => {
-    //   const { rfid, name, sex, place_of_birth, birth_date, email, phone } =
-    //     req.body;
-
-    //   try {
-    //     dbConnect(); // connect to database
-    //     const data = CustomerModel.create({
-    //       rfid,
-    //       name,
-    //       sex,
-    //       place_of_birth,
-    //       birth_date,
-    //       email,
-    //       phone,
-    //       rfid_used: 1,
-    //     });
-
-    //     return res.status(200).json({
-    //       message: 'create Customer successfully',
-    //       data,
-    //     });
-    //   } catch (err) {
-    //     return res.status(400).send({ err });
-    //   }
-    // },
     GET: async (req: NextApiRequest, res: NextApiResponse) => {
       try {
         dbConnect(); // connect to database
 
-        const Customers = await CustomerModel.find();
+        const Customers = await CustomerModel.find().sort({
+          createdAt: -1,
+        });
 
         return res.send({
           message: 'Berhasil',

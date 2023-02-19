@@ -50,7 +50,7 @@ export default async function handler(
       try {
         dbConnect(); // connect to database
         const transactions = await TransactionModel.find().sort({
-          updatedAt: -1,
+          createdAt: -1,
         });
 
         return res.send({

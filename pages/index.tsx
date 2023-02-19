@@ -4,24 +4,50 @@ import { useAppDispatch } from '@/hooks/redux';
 import { ProductService } from '@/services/product.services';
 import { setModalProduct } from '@/stores/features/modal/modal.slice';
 import { IProduct } from '@/types/res';
-import { Box, Button, Grid, Group, Stack, Title } from '@mantine/core';
+import {
+  Box,
+  Button,
+  Grid,
+  Group,
+  LoadingOverlay,
+  Stack,
+  Title,
+} from '@mantine/core';
 import { unstable_getServerSession } from 'next-auth';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useMutation } from 'react-query';
-import { authOptions } from './api/auth/[...nextauth]';
+import { useMemo } from 'react';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { APP_NAME } from '../variables';
+import { authOptions } from './api/auth/[...nextauth]';
 
 interface IProps {
   products: IProduct[];
 }
 
-function Home({ products }: IProps) {
+function Home() {
+  const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const { mutateAsync, isLoading } = useMutation({
+  const { data: productsApi, isFetching } = useQuery({
+    queryKey: ['products'],
+    queryFn: ProductService.getAllProduct,
+  });
+
+  const products = useMemo(
+    () =>
+      productsApi?.data && Array.isArray(productsApi.data)
+        ? productsApi.data
+        : [],
+    [productsApi?.data]
+  );
+
+  const { mutateAsync } = useMutation({
     mutationFn: ProductService.deleteProduct,
+    onSuccess() {
+      queryClient.invalidateQueries(['products']);
+    },
   });
 
   const handleCreateProduct = () => {
@@ -65,7 +91,7 @@ function Home({ products }: IProps) {
           <Title order={3}>Daftar produk</Title>
           <Button onClick={handleCreateProduct}>Tambah Produk</Button>
         </Group>
-        {products.length > 0 ? (
+        {products?.length > 0 ? (
           <Grid>
             {products?.map(v => (
               <Grid.Col span={6} sm={4} md={3} key={v._id}>
@@ -82,6 +108,7 @@ function Home({ products }: IProps) {
         )}
       </Stack>
       <ModalProduct />
+      <LoadingOverlay visible={isFetching} overlayBlur={10} mih="100vh" />
     </>
   );
 }
@@ -102,10 +129,8 @@ export async function getServerSideProps(context: any) {
     };
   }
 
-  const { data } = await ProductService.getAllProduct();
-
   return {
-    props: { session, products: data },
+    props: { session },
   };
 }
 

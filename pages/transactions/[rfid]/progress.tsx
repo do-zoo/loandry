@@ -1,10 +1,13 @@
+import {
+  ModalIllustration,
+  ModalTitle,
+} from '@/components/Modals/RfId/_BaseRfId.modal';
 import { CustomerService } from '@/services/customer.services';
 import { RfIdService } from '@/services/rfid.services';
 import { TransactionsService } from '@/services/transaction.services';
 import { ICustomer, IProduct, ITransaction } from '@/types/res';
 import { rupiah } from '@/utils/format';
 import { localeSexToId } from '@/utils/index';
-import { useMutation } from 'react-query';
 import {
   AspectRatio,
   Box,
@@ -12,6 +15,7 @@ import {
   Card,
   Grid,
   Group,
+  LoadingOverlay,
   Modal,
   Stack,
   Text,
@@ -19,17 +23,8 @@ import {
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
-import {
-  ModalTitle,
-  ModalIllustration,
-} from '@/components/Modals/RfId/_BaseRfId.modal';
-
-interface IProps {
-  customer: ICustomer;
-  transactions: ITransaction[];
-  products: IProduct[];
-}
+import { useEffect, useMemo, useState } from 'react';
+import { useMutation, useQuery } from 'react-query';
 
 const getTransactionProduct = ({
   transaction,
@@ -67,13 +62,59 @@ const sendMail = async (payload: SendMailPayload) => {
   }).then(() => console.log('Your mail is sent!'));
 };
 
-function Progress(props: IProps) {
-  const { customer, transactions, products } = props;
+function Progress() {
   const [isModalSuccessOpen, setIsModalSuccessOpen] = useState(false);
-
   const router = useRouter();
+  const { rfid } = router.query ?? {};
 
-  const { mutateAsync, isLoading } = useMutation({
+  const {
+    data: customerTransactionsApi,
+    isFetching,
+    refetch,
+  } = useQuery({
+    queryKey: ['transactions-progress'],
+    queryFn: () =>
+      CustomerService.getCustomerTransactions({
+        rfid: String(rfid),
+        params: {
+          status: 'progress',
+        },
+      }),
+  });
+
+  const products = useMemo(
+    () =>
+      customerTransactionsApi?.data?.products &&
+      Array.isArray(customerTransactionsApi?.data?.products)
+        ? customerTransactionsApi?.data?.products
+        : [],
+    [customerTransactionsApi?.data?.products]
+  );
+
+  const transactions = useMemo(
+    () =>
+      customerTransactionsApi?.data?.transactions &&
+      Array.isArray(customerTransactionsApi?.data?.transactions)
+        ? customerTransactionsApi?.data?.transactions
+        : [],
+    [customerTransactionsApi?.data?.transactions]
+  );
+
+  const customer = useMemo(
+    () =>
+      customerTransactionsApi?.data?.customer
+        ? customerTransactionsApi?.data?.customer
+        : ({} as ICustomer),
+    [customerTransactionsApi?.data?.customer]
+  );
+
+  useEffect(() => {
+    if (transactions.length === 0 && !isFetching) {
+      router.replace('/transactions');
+    }
+  }, [isFetching, router, transactions.length]);
+
+  const { mutateAsync } = useMutation({
     mutationFn: TransactionsService.updateStatusTransaction,
   });
 
@@ -93,9 +134,9 @@ function Progress(props: IProps) {
         template_id: process.env.NEXT_PUBLIC_EMAIL_TEMPLATE_ID ?? '',
         user_id: process.env.NEXT_PUBLIC_EMAIL_PUBLIC_KEY ?? '',
         template_params: {
-          email: customer.email,
-          to_name: customer.name,
-          rfid: customer.rfid,
+          email: customer?.email,
+          to_name: customer?.name,
+          rfid: customer?.rfid,
           invoice: transaction.invoice,
           product_name: transaction.product_name,
           total_amount: transaction.total_amount,
@@ -111,12 +152,7 @@ function Progress(props: IProps) {
 
   const handleCloseModal = () => {
     setIsModalSuccessOpen(false);
-
-    if (transactions.length <= 0) {
-      router.push('/transactions');
-      return;
-    }
-    router.replace(router.asPath);
+    refetch();
   };
 
   return (
@@ -230,6 +266,8 @@ function Progress(props: IProps) {
           <Button onClick={handleCloseModal}>tutup</Button>
         </Stack>
       </Modal>
+
+      <LoadingOverlay visible={isFetching} overlayBlur={10} mih="100vh" />
     </>
   );
 }
@@ -248,42 +286,9 @@ export const getServerSideProps: GetServerSideProps = async context => {
       },
     };
   }
-
-  try {
-    const {
-      data: { transactions, customer, products },
-      status,
-    } = await CustomerService.getCustomerTransactions({
-      rfid,
-      params: {
-        status: 'progress',
-      },
-    });
-
-    if (transactions.length === 0) {
-      return {
-        redirect: {
-          destination: '/transactions',
-          permanent: false,
-        },
-      };
-    }
-
-    return {
-      props: {
-        customer,
-        transactions,
-        products,
-      }, // will be passed to the page component as props
-    };
-  } catch (error) {
-    return {
-      redirect: {
-        destination: '/transactions',
-        permanent: false,
-      },
-    };
-  }
+  return {
+    props: {},
+  };
 };
 
 export default Progress;

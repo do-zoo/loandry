@@ -1,21 +1,35 @@
-import { useState } from 'react';
 import { TransactionModal } from '@/components/Modals';
-import { APP_NAME } from '@/variables/index';
-import { Box, Button, Group, Stack, Title } from '@mantine/core';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { TransactionsService } from '@/services/transaction.services';
-import { ITransaction } from '@/types/res';
 import { TransactionTable } from '@/components/Table';
+import { TransactionsService } from '@/services/transaction.services';
+import { APP_NAME } from '@/variables/index';
+import {
+  Box,
+  Button,
+  Group,
+  LoadingOverlay,
+  Stack,
+  Title,
+} from '@mantine/core';
+import Head from 'next/head';
+import { useMemo, useState } from 'react';
+import { useQuery } from 'react-query';
 
-interface IProps {
-  data: ITransaction[];
-}
-
-function Transactions({ data }: IProps) {
+function Transactions() {
   const [opened, setOpened] = useState(false);
-  // const router = useRouter();
   const [modalType, setModalType] = useState<'create' | 'update'>('create');
+
+  const { data: transactionsApi, isFetching } = useQuery({
+    queryKey: ['transactions'],
+    queryFn: TransactionsService.getAllTransaction,
+  });
+
+  const transactions = useMemo(
+    () =>
+      transactionsApi?.data && Array.isArray(transactionsApi.data)
+        ? transactionsApi.data
+        : [],
+    [transactionsApi?.data]
+  );
 
   const handleCloseModal = () => {
     setOpened(false);
@@ -45,7 +59,7 @@ function Transactions({ data }: IProps) {
           </Group>
         </Group>
         <Box>
-          <TransactionTable transactions={data} />
+          <TransactionTable transactions={transactions} />
         </Box>
       </Stack>
       <TransactionModal
@@ -53,16 +67,9 @@ function Transactions({ data }: IProps) {
         onClose={handleCloseModal}
         modalType={modalType}
       />
+      <LoadingOverlay visible={isFetching} overlayBlur={10} mih="100vh" />
     </>
   );
-}
-
-export async function getServerSideProps() {
-  // Fetch data from external API
-  const { data } = await TransactionsService.getAllTransaction();
-
-  // Pass data to the page via props
-  return { props: { data } };
 }
 
 export default Transactions;

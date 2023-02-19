@@ -11,7 +11,9 @@ function Layout({ children }: { children: React.ReactNode }) {
         }}
       >
         <HeaderMegaMenu />
-        <Container py="md">{children}</Container>
+        <Container py="md" pos="relative">
+          {children}
+        </Container>
       </Box>
     </>
   );

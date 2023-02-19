@@ -5,7 +5,6 @@ import { Box, createStyles, Modal, Stack } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
-import { Url } from 'url';
 import RfIdScannerMessage, {
   ModalButton,
   ModalIllustration,
