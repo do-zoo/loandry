@@ -93,8 +93,6 @@ export async function getServerSideProps(context: any) {
     authOptions
   );
 
-  const { data } = await ProductService.getAllProduct();
-
   if (!session) {
     return {
       redirect: {
@@ -103,6 +101,8 @@ export async function getServerSideProps(context: any) {
       },
     };
   }
+
+  const { data } = await ProductService.getAllProduct();
 
   return {
     props: { session, products: data },

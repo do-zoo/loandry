@@ -103,8 +103,7 @@ function Progress(props: IProps) {
       };
 
       sendMail(payloadMail);
-
-      router.replace(router.asPath);
+      setIsModalSuccessOpen(true);
     } catch (error) {
       console.log(error);
     }
@@ -112,9 +111,12 @@ function Progress(props: IProps) {
 
   const handleCloseModal = () => {
     setIsModalSuccessOpen(false);
+
     if (transactions.length <= 0) {
       router.push('/transactions');
+      return;
     }
+    router.replace(router.asPath);
   };
 
   return (
@@ -216,14 +218,14 @@ function Progress(props: IProps) {
           })}
         </Grid>
       </Stack>
-      <Modal opened={isModalSuccessOpen} onClose={handleCloseModal}>
-        <Stack align="center" my={45}>
+      <Modal opened={isModalSuccessOpen} onClose={handleCloseModal} centered>
+        <Stack align="center">
           <ModalTitle status={'success'} />
           <Box>
             <ModalIllustration status={'success'} />
           </Box>
         </Stack>
-        <Stack align="center" spacing="xl">
+        <Stack align="center" spacing="xl" my={30}>
           <Text>Notifikasi laundry terkirim ke email pelanggan.</Text>
           <Button onClick={handleCloseModal}>tutup</Button>
         </Stack>

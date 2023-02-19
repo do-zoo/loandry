@@ -49,7 +49,9 @@ export default async function handler(
     GET: async (req: NextApiRequest, res: NextApiResponse) => {
       try {
         dbConnect(); // connect to database
-        const transactions = await TransactionModel.find();
+        const transactions = await TransactionModel.find().sort({
+          updatedAt: -1,
+        });
 
         return res.send({
           message: 'Berhasil',

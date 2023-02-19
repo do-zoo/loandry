@@ -14,7 +14,7 @@ interface IProps {
 
 function Transactions({ data }: IProps) {
   const [opened, setOpened] = useState(false);
-  const router = useRouter();
+  // const router = useRouter();
   const [modalType, setModalType] = useState<'create' | 'update'>('create');
 
   const handleCloseModal = () => {

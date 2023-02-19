@@ -100,9 +100,7 @@ const CreateTransaction: NextPage<IAddCustomerProps> = props => {
 
     try {
       mutateAsync(payload);
-      // handleDeleteRfId();
-      router.push('/transactions');
-      // console.log(values);
+      router.replace('/transactions');
     } catch (error) {
       console.log(error);
     }
