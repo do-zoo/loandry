@@ -12,12 +12,18 @@ import {
   Card,
   Grid,
   Group,
+  Modal,
   Stack,
   Text,
 } from '@mantine/core';
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
+import {
+  ModalTitle,
+  ModalIllustration,
+} from '@/components/Modals/RfId/_BaseRfId.modal';
 
 interface IProps {
   customer: ICustomer;
@@ -37,6 +43,7 @@ const getTransactionProduct = ({
 
 function Progress(props: IProps) {
   const { customer, transactions, products } = props;
+  const [isModalSuccessOpen, setIsModalSuccessOpen] = useState(false);
 
   const router = useRouter();
 
@@ -56,103 +63,124 @@ function Progress(props: IProps) {
     }
   };
 
-  return (
-    <Stack py="md">
-      <Stack spacing={0}>
-        {/* need to make component */}
-        <Text>
-          Nama:{' '}
-          <Text span fw="bold">
-            {customer.name}
-          </Text>
-        </Text>
-        <Text>
-          Jenis Kelamin:{' '}
-          <Text span fw="bold">
-            {localeSexToId(customer.sex)}
-          </Text>
-        </Text>
-      </Stack>
+  const handleCloseModal = () => {
+    setIsModalSuccessOpen(false);
+    if (transactions.length <= 0) {
+      router.push('/transactions');
+    }
+  };
 
-      <Grid>
-        {transactions.map(v => {
-          const product = getTransactionProduct({
-            products,
-            transaction: v,
-          });
-          return (
-            <Grid.Col span={12} md={6} key={v._id}>
-              <Card shadow="md" withBorder radius="md">
-                <Card.Section px="md" py="xs" withBorder>
-                  <Group position="apart">
-                    <Text>{v.invoice}</Text>
-                    <Text>
-                      {new Date(v.due_date).toLocaleString('id-ID', {
-                        dateStyle: 'long',
-                      })}
-                    </Text>
-                  </Group>
-                </Card.Section>
-                <Card.Section p="md">
-                  <Group align="stretch" position="apart" noWrap>
-                    <Box w="150px">
-                      <AspectRatio
-                        pos="relative"
-                        ratio={1}
-                        sx={{ maxWidth: '100%' }}
-                        mx="auto"
-                      >
-                        {product && Boolean(product.image) ? (
-                          <Image src={product.image} fill alt="img-product" />
-                        ) : (
-                          <Image
-                            src="/assets/png/placeholder-product.png"
-                            fill
-                            alt="alt img-product"
-                          />
-                        )}
-                      </AspectRatio>
-                    </Box>
-                    <Stack
-                      justify="space-between"
-                      sx={{
-                        flex: '1 1 auto',
-                      }}
-                    >
-                      <Stack justify="start" spacing={0}>
-                        <Text weight="bold" color="blue" size="lg">
-                          {product?.name}
-                        </Text>
-                        <Text size="xs">
-                          1000kg x {rupiah(product?.price ?? 0)}{' '}
-                        </Text>
-                        <Text weight="bold">
-                          Total: {rupiah(v.total_amount)}
-                        </Text>
-                      </Stack>
-                      <Group position="right">
-                        <Button
-                          color="green"
-                          onClick={() =>
-                            handleUpdateStatus({
-                              id: v._id,
-                              status: 'success',
-                            })
-                          }
-                          // loading={isLoading}
+  return (
+    <>
+      <Stack py="md">
+        <Stack spacing={0}>
+          {/* need to make component */}
+          <Text>
+            Nama:{' '}
+            <Text span fw="bold">
+              {customer.name}
+            </Text>
+          </Text>
+          <Text>
+            Jenis Kelamin:{' '}
+            <Text span fw="bold">
+              {localeSexToId(customer.sex)}
+            </Text>
+          </Text>
+        </Stack>
+
+        <Grid>
+          {transactions.map(v => {
+            const product = getTransactionProduct({
+              products,
+              transaction: v,
+            });
+            return (
+              <Grid.Col span={12} md={6} key={v._id}>
+                <Card shadow="md" withBorder radius="md">
+                  <Card.Section px="md" py="xs" withBorder>
+                    <Group position="apart">
+                      <Text>{v.invoice}</Text>
+                      <Text>
+                        {new Date(v.due_date).toLocaleString('id-ID', {
+                          dateStyle: 'long',
+                        })}
+                      </Text>
+                    </Group>
+                  </Card.Section>
+                  <Card.Section p="md">
+                    <Group align="stretch" position="apart" noWrap>
+                      <Box w="150px">
+                        <AspectRatio
+                          pos="relative"
+                          ratio={1}
+                          sx={{ maxWidth: '100%' }}
+                          mx="auto"
                         >
-                          Selesaikan
-                        </Button>
-                      </Group>
-                    </Stack>
-                  </Group>
-                </Card.Section>
-              </Card>
-            </Grid.Col>
-          );
-        })}
-      </Grid>
-    </Stack>
+                          {product && Boolean(product.image) ? (
+                            <Image src={product.image} fill alt="img-product" />
+                          ) : (
+                            <Image
+                              src="/assets/png/placeholder-product.png"
+                              fill
+                              alt="alt img-product"
+                            />
+                          )}
+                        </AspectRatio>
+                      </Box>
+                      <Stack
+                        justify="space-between"
+                        sx={{
+                          flex: '1 1 auto',
+                        }}
+                      >
+                        <Stack justify="start" spacing={0}>
+                          <Text weight="bold" color="blue" size="lg">
+                            {product?.name}
+                          </Text>
+                          <Text size="xs">
+                            1000kg x {rupiah(product?.price ?? 0)}{' '}
+                          </Text>
+                          <Text weight="bold">
+                            Total: {rupiah(v.total_amount)}
+                          </Text>
+                        </Stack>
+                        <Group position="right">
+                          <Button
+                            color="green"
+                            onClick={() =>
+                              handleUpdateStatus({
+                                id: v._id,
+                                status: 'success',
+                              })
+                            }
+                            // loading={isLoading}
+                          >
+                            Selesaikan
+                          </Button>
+                        </Group>
+                      </Stack>
+                    </Group>
+                  </Card.Section>
+                </Card>
+              </Grid.Col>
+            );
+          })}
+        </Grid>
+      </Stack>
+      <Modal opened={isModalSuccessOpen} onClose={handleCloseModal}>
+        <Stack align="center" my={45}>
+          <ModalTitle status={'success'} />
+          <Box>
+            <ModalIllustration status={'success'} />
+          </Box>
+        </Stack>
+        <Stack align="center" spacing="xl">
+          <Text>Notifikasi laundry terkirim ke email pelanggan.</Text>
+          <Button onClick={handleCloseModal}>tutup</Button>
+        </Stack>
+      </Modal>
+    </>
   );
 }
 
